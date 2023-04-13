@@ -1,0 +1,102 @@
+
+.header{
+    display: flex;
+    background-color: rgb(121, 77, 162);
+    justify-content: space-around;
+    padding: 1rem;
+  
+}
+  
+.header_marca{
+    display: flex;
+}
+  
+.header img{
+margin-left: 1rem;
+}
+
+.header_titulo{
+color: black;
+
+padding: 1rem;
+
+}
+
+.navBar{
+display: flex;
+margin-right: 8rem;
+
+align-items: center;
+width: 50rem;
+
+}
+
+.navBar .NavBar_Contenedor{
+
+margin-right: 5rem;
+width: 50rem;
+    
+}
+
+.navBar .NavBar_Contenedor .NavBar_BarraBusqueda{
+display: flex;
+
+
+}
+
+.navBar .NavBar_Contenedor .NavBar_BarraBusqueda .Formulario_Busqueda{
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.navBar .NavBar_Contenedor .NavBar_BarraBusqueda .Formulario_Busqueda .Input_Busqueda{
+
+width: 50rem;
+height: 2rem;
+border-radius: 15px;
+z-index: -0.3;
+}
+.navBar .NavBar_Contenedor .NavBar_BarraBusqueda .Formulario_Busqueda .Submit_Lupa{
+position: relative;
+right: 1.6rem;
+z-index: 1;
+height: 1.6rem;
+}
+.navBar .NavBar_Contenedor .NavBar_Categorias{
+display: flex;
+position: relative;
+top: 0.5rem;
+justify-content: space-around;
+
+
+}
+.navBar .NavBar_Contenedor .NavBar_Categorias button{
+padding: 0.2rem;
+padding-left: 0.5rem;
+padding-right: 0.5rem;
+border-radius: 0.5rem;
+}
+
+.navBar .CartWidget{
+display: flex;
+
+}
+
+.navBar .CartWidget img{
+    
+    margin-left: 0px;
+    position: relative;
+    bottom: 0.8rem;
+
+}
+
+.navBar .CartWidget .notificacion{
+background-color: black;
+color: beige;
+height: 20%;
+padding: 0.2rem;
+border-radius: 1rem;
+position: relative;
+bottom: 15px;
+}

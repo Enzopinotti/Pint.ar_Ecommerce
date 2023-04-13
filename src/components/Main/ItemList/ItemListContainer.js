@@ -3,10 +3,10 @@ import ItemList from './ItemList';
 
 const ItemListContainer = () => {
 
-    const [saludo, changeSaludo] = useState("¿Hola Como estás?")
+    const [Id_Producto, changeSaludo] = useState("Nombre del Producto")
     
     return (
-     <ItemList greeting={saludo} / >
+     <ItemList id_Producto={Id_Producto} / >
     )
   }
   

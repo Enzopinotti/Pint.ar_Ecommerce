@@ -1,11 +1,25 @@
+import Producto from "./Producto/Producto"
+
 const ItemList = (props) => {
 
     console.log(props)
     return (
-        <div>
-           <h1>{props.greeting}</h1>
-        </div>
-      
+
+      <div className="ItemList">
+
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+        <Producto id_Producto={props.id_Producto}/>
+
+      </div>
+
     )
   }
   
