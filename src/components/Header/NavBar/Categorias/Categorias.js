@@ -4,9 +4,11 @@ const Categorias = () =>{
 
        <div className="NavBar_Categorias">
         
-            <button>Latex</button>
-            <button>A la cal</button>
-            <button>Herramientas</button>
+            <a href="#"><button className="btn">Latex</button></a>
+
+            <a href="#"><button className="btn">A la cal</button></a>
+
+            <a href="#"><button className="btn">Herramientas</button></a>
 
        </div>
         

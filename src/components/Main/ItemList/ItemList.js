@@ -1,8 +1,9 @@
 import Producto from "./Producto/Producto"
 
+
 const ItemList = (props) => {
 
-    console.log(props)
+    
     return (
 
       <div className="ItemList">

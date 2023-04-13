@@ -1,0 +1,57 @@
+[
+    {
+        
+        "id": "Cal Blanco",
+        "precio": 1000,
+        "img": "/assets/Foto_pintura1.png"
+        
+    },
+
+    {
+        
+        "id": "Cal Rojo",
+        "precio": 1600,
+        "img": "/assets/Foto_pintura1.png"
+        
+    },
+
+    {
+        
+        "id": "Cal Blanco Tiza",
+        "precio": 1200,
+        "img": "/assets/Foto_pintura1.png"
+        
+    },
+
+    {
+        
+        "id": "Cal Verde",
+        "precio": 1500,
+        "img": "/assets/Foto_pintura1.png"
+        
+    },
+
+    {
+        
+        "id": "Cal Gris",
+        "precio": 1200,
+        "img": "/assets/Foto_pintura1.png"
+        
+    },
+
+    {
+        
+        "id": "Cal Amarillo",
+        "precio": 1600,
+        "img": "/assets/Foto_pintura1.png"
+        
+    },
+
+    {
+        
+        "id": "Cal Marron",
+        "precio": 1900,
+        "img": "/assets/Foto_pintura1.png"
+        
+    }
+]
