@@ -1,5 +1,7 @@
+
 const Producto = (props) => {
 
+    let a = "uwu";
     
     return (
         <div className="Producto">

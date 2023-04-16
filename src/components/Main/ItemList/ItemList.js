@@ -8,16 +8,13 @@ const ItemList = (props) => {
 
       <div className="ItemList">
 
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
-        <Producto id_Producto={props.id_Producto}/>
+      <Producto id_Producto={props.id_Producto}/> 
+      <Producto id_Producto={props.id_Producto}/> 
+      <Producto id_Producto={props.id_Producto}/> 
+      <Producto id_Producto={props.id_Producto}/> 
+      <Producto id_Producto={props.id_Producto}/> 
+      <Producto id_Producto={props.id_Producto}/> 
+      <Producto id_Producto={props.id_Producto}/> 
 
       </div>
 
