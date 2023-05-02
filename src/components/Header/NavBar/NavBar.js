@@ -15,6 +15,9 @@ const NavBar = () =>{
                 
                 
                 <Categorias/>
+                
+
+                
 
             </div>
 

@@ -1,18 +1,311 @@
+@keyframes slide-ir-y-volver {
+    0% {
+      transform: translateX(0);
+    }
+    33% {
+      transform: translateX(-20px);
+    }
+    
+    66%{
+        transform: translateX(20px);
+    }
+    100%{
+        transform: translateX(0);
+    }
+    
+  }
+
+  
+
 
 .main{
-    height: 85.3vh;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    
+    background-image: url(/public/assets/fondoMain.png);
+    background-size:cover;
+    position: relative;
+    margin-top: 7rem;
+    
 }
 
-.main .ItemList{
+button{
+    cursor: pointer;
+}
+
+.main .Error404{
+    height: 80.5vh;
+    width: 100%;
+    background-image: url(/public/assets/404.png);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.main .Error404 .TextoError{
+    padding: 3rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 2rem;
+    text-shadow: 1px 1px 4px black;
+}
+
+.main .ContenedorCargando{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 80.5vh;
+    align-items: center;
+}
+
+
+
+.main .ContenedorCargando .cargando{
+    font-weight: bolder;
+    font-size: 2rem;
+    margin-top: 15rem;
+}
+
+.main .wrapper{
+    width: 90%;
+    margin-top: 4rem;
+}
+
+.main .wrapper ul{
+   display: flex;
+   flex-direction: row;
+   list-style: none;
+   width: 90%;
+   
+   
+}
+
+.main .wrapper ul li{
+    padding: 0.5rem;
+    padding-left: 0;
+    padding-right: 1rem;
+    text-decoration: none;
+    color: black;
+}
+
+.main .wrapper ul .active a{
+    font-weight: bolder;
+}
+
+.main .wrapper ul li a{
+    text-decoration: none;
+    color: black;
+    font-size: large;
+    font-weight:500;
+}
+
+
+.main .ContenedorCatalogo{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    background-color: #e9e3e3;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px 4px rgba(0,0,0,.1);
+    
+    
+}
+
+.main .ContenedorCatalogo .ItemList{
     display: flex;
     justify-content: flex-start;
-    padding: 2rem;
     flex-wrap: wrap;
+    margin-left: 6rem;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+   
 }
 
-.main .ItemList .Producto{
+.main .ContenedorCatalogo .ItemList .Producto{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding:2rem;
+    width: 22.75vw;
+    height: 30rem;
+    border: 0.01rem solid rgba(128, 128, 128, 0.2) ;
+    margin-right: 4rem;
+    margin-bottom: 1.5rem;
+    border-radius: 1rem;
+    background-color: rgba(32, 28, 34, 0.2);
+    transition: transform 0.6s ease-in-out;
+
 }
+
+.main .ContenedorCatalogo .ItemList .Producto:hover{
+    transform: scale(1.02);
+}
+
+.main .ContenedorCatalogo .ItemList .Producto:hover{
+    border: 0.09rem solid rgb(121, 77, 162);
+     
+}
+
+.main .ContenedorCatalogo .ItemList .Producto:hover .BotonProducto{
+    opacity: 1;
+    transform: translateY(40%);
+     
+}
+
+
+.main .ContenedorCatalogo .ItemList .Producto .BotonProducto{
+    opacity: 0;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    transition: opacity 0.6s ease-in-out;
+    transition: all 0.6s ease-in-out;
+    background-color: rgba(218, 162, 236, 0.2);
+    
+    
+}
+
+.main .ContenedorCatalogo .ItemList .Producto .DescripcionProducto{
+    width: 80%;
+    text-align: center;
+    height: 7rem;
+    
+}
+
+.main .ContenedorCatalogo .ItemList .Producto .PrecioProducto{
+    
+    font-weight: bolder;
+    font-size:x-large;
+    
+}
+
+
+.main .ItemDetail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35vw;
+    align-self: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border: 0.01rem solid rgba(128, 128, 128, 0.2) ;
+    border-radius: 1.3rem;
+    background-color: rgba(218, 162, 236, 0.5);
+}
+
+.main .ItemDetail  .botonVolver{
+    width: 6rem;
+   
+    
+}
+
+.main .ItemDetail .botonVolver:hover{
+    animation: slide-ir-y-volver 1s;
+}
+
+.main .ItemDetail .ItemDetail-Item{
+    padding: 1rem;
+    border: 0.1rem solid white;
+    border-radius: 20px;
+    width: 70%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.main .ItemDetail .ItemDetail-Item:hover{
+    transform: scale(1.02);
+}
+
+.main .ItemDetail .ItemDetail-Item .TituloImagen{
+    display: flex;
+    flex-direction: column;
+    align-items:center ;
+    
+}
+
+.main .ItemDetail .ItemDetail-Item .informacion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+}
+
+
+
+
+.contenedor-item-count{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.5rem;
+    align-items: center;
+    background-color: rgba(218, 162, 236, 0.2);
+    width: 55%;
+    align-self: center;
+    padding: 1rem;
+    border: 0.1rem solid white;
+    border-radius: 20px;
+    transition: transform 0.2s ease-in-out;
+
+}
+
+.contenedor-item-count:hover{
+    transform: scale(1.05);
+}
+
+
+.contenedor-item-count .controles{
+    display: flex;
+    width: 7rem;
+    justify-content: space-around;
+    margin-bottom: 0.5rem;
+}
+
+.contenedor-item-count .controles .boton-quitar{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 15px;
+    background-color: rgba(218, 162, 236, 0.3);
+    transition: transform 0.2s ease-in-out;
+
+    
+}
+
+.contenedor-item-count .controles .boton-quitar:active {
+  transform: scale(0.70); 
+}
+
+.contenedor-item-count .controles .boton-agregar{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 15px;
+    background-color: rgba(218, 162, 236, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+.contenedor-item-count .controles .boton-agregar:active {
+    transform: scale(0.70); 
+  }
+
+.contenedor-item-count .controles .cantidad{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.contenedor-item-count .boton-agregar-carrito{
+    padding: 0.2rem;
+    border-radius: 6px;
+    background-color: rgba(218, 162, 236, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+.contenedor-item-count .boton-agregar-carrito:active{
+
+    transform: scale(0.70); 
+}
+

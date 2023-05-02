@@ -1,13 +1,58 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import ItemList from './ItemList';
+import { useParams } from 'react-router-dom';
 
-const ItemListContainer = () => {
+const ItemListContainer = (props) => {
   
-  const [Id_Producto, SetId_Producto] = useState("Nombre del Producto")
+    const [Producto, SetProducto] = useState([])
+
+    const {categoryId} = useParams();
+
+    
+
+    const GetElementByCategory = (CategoryBuscado) => {
+
+      setTimeout(() => {
+        fetch('/json/productos.json')
+        .then(res => res.json())
+        .then(datos =>{ 
+          
+          if(props.Subcategoria == true){
+            SetProducto(datos.filter(producto => producto.categoriaSec == CategoryBuscado))
+          }else{
+            SetProducto(datos.filter(producto => producto.categoriaPrim === CategoryBuscado))
+          }
+          
+            
+        })
+      },  500)
+
+    }
+
+    useEffect(() => {
+
+      if(categoryId == undefined){
+        setTimeout(() => {
+          fetch('/json/productos.json')
+          .then(res => res.json())
+          .then(datos =>{ 
+            
+            SetProducto(datos)
+  
+          })
+        },  500)
+      }else{
+        GetElementByCategory(categoryId)
+      }
+        
+      
+    }, [categoryId])
+      
     
     return (
-     <ItemList id_Producto={Id_Producto} / >
+      <ItemList productos={Producto}  />
     )
+
   }
   
 export default ItemListContainer

@@ -1,8 +1,11 @@
 import NavBar from "./NavBar/NavBar"
+import { Link } from "react-router-dom"
+
 const Header = ()=>{
     return(
         <header className="header" >
             
+            <Link to="/" className="Link">
             <div className="header_marca">
 
                 <img src="/assets/pintureria-logo.png" width={"90px"}/  >
@@ -11,6 +14,7 @@ const Header = ()=>{
                 </h1>
 
             </div>
+            </Link>
             
 
             <NavBar/>
