@@ -1,13 +1,24 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import ItemCount from './ItemCount/ItemCount';
+import {Context} from './../../../Providers/CustomProvider';
 
 
 
 
 
-const ItemDetail = (props) => {
+const ItemDetail = ({navigate, img, name, precio, categoriaPrim, stock, descripcion}) => {
   
-    console.log(props);
+    const {agregarAlCarrito} = useContext(Context);
+
+    const handleClickNavigate = () => {
+      navigate();
+    }
+
+    const Carrito = (cantidad) => {
+
+      agregarAlCarrito(cantidad)
+
+    }
     
     return (
 
@@ -15,7 +26,7 @@ const ItemDetail = (props) => {
         
         <br/>
        
-        <input onClick={props.navigate} type='image' src='/assets/flechaAtras.png'  className='botonVolver'></input>
+        <input onClick={handleClickNavigate} type='image' src='/assets/flechaAtras.png'  className='botonVolver'></input>
 
         
         <h2>Detalle del producto</h2>
@@ -25,13 +36,13 @@ const ItemDetail = (props) => {
 
             <section className='TituloImagen'>
 
-              <h3 className='TituloDetail'>{props.nombre}</h3>
+              <h3 className='TituloDetail'>{name}</h3>
 
               <br/>
 
               <imagen>
 
-                <img src={props.img} width={"200px"} height={"200px"} alt={props.name}/>
+                <img src={img} width={"200px"} height={"200px"} alt={name}/>
 
               </imagen>
 
@@ -41,19 +52,19 @@ const ItemDetail = (props) => {
 
             <section className='informacion'>
 
-              <p className='info'><strong>Categoria: </strong>{props.categoriaPrim}</p>
+              <p className='info'><strong>Categoria: </strong>{categoriaPrim}</p>
 
               <br/>
 
-              <p className='info'><strong>Precio: </strong>{props.precio}</p>
+              <p className='info'><strong>Precio: </strong>{precio}</p>
 
               <br/>
 
-              <p className='info'><strong>Stock: </strong> {props.stock}</p>
+              <p className='info'><strong>Stock: </strong> {stock}</p>
 
               <br/>
 
-              <p className='info'><strong>Descripcion:</strong> {props.descripcion}</p>
+              <p className='info'><strong>Descripcion:</strong> {descripcion}</p>
 
             </section>
 
@@ -62,7 +73,7 @@ const ItemDetail = (props) => {
         <br/>
         <br/>
         <br/>
-        <ItemCount stock={props.stock} onAdd={(cantidad)=>{console.log(cantidad)}} initial={1} />
+        <ItemCount stock={stock} onAdd={Carrito} initial={1} />
 
         </article>
       

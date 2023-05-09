@@ -3,12 +3,12 @@ import ItemDetailContainer from "./ItemDetail/ItemDetailContainer";
 import 'animate.css';
 
 
-const ItemList = (props) => {
+const ItemList = ({productos}) => {
 
-  const listaProductos = props.productos
   
-
-  if(listaProductos.length == 0){
+  
+  
+  if(productos.length == 0){
     
     return (
       
@@ -33,7 +33,7 @@ const ItemList = (props) => {
     
         <div className="ItemList">
           
-          {listaProductos.map(producto => <Item key={producto.id} {...producto}/>)}
+          {productos.map(producto => <Item key={producto.id} {...producto}/>)}
 
         </div>
 

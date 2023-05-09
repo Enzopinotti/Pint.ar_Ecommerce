@@ -2,13 +2,15 @@ import React from 'react'
 import { useState } from 'react'
 import 'animate.css';
 
-const ItemCount = (props) => {
+const ItemCount = ({initial, stock, onAdd}) => {
 
-    const [cantidad, setCantidad] = useState(props.initial)
+
+    
+    const [cantidad, setCantidad] = useState(initial)
 
     
     const handleAgregar = (e) => {
-        if(cantidad < props.stock){
+        if(cantidad < stock){
             setCantidad(cantidad + 1)
         }
         
@@ -21,6 +23,10 @@ const ItemCount = (props) => {
             setCantidad(cantidad - 1)
         }
         
+    }
+
+    const agregarAlCarrito = () => {
+        onAdd(cantidad)
     }
         
     
@@ -40,7 +46,7 @@ const ItemCount = (props) => {
 
             </div>
                 
-            <button className='boton-agregar-carrito' onClick={() => props.onAdd(cantidad)} disabled={!props.stock}>Agregar al carrito</button>
+            <button className='boton-agregar-carrito' onClick={agregarAlCarrito} disabled={!stock}>Agregar al carrito</button>
 
         </div>
     )

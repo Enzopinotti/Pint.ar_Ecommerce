@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import ItemList from './ItemList';
 import { useParams } from 'react-router-dom';
 
-const ItemListContainer = (props) => {
+const ItemListContainer = ({Subcategoria}) => {
   
     const [Producto, SetProducto] = useState([])
 
@@ -17,7 +17,7 @@ const ItemListContainer = (props) => {
         .then(res => res.json())
         .then(datos =>{ 
           
-          if(props.Subcategoria == true){
+          if(Subcategoria == true){
             SetProducto(datos.filter(producto => producto.categoriaSec == CategoryBuscado))
           }else{
             SetProducto(datos.filter(producto => producto.categoriaPrim === CategoryBuscado))

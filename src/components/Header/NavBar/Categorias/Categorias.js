@@ -8,7 +8,10 @@ const Categorias = () =>{
         <ul className="NavBar_Categorias">
 
 
-            <NavLink to="/category/Pintura" className="Link"><button className="btn">Pinturas</button><SubCategoriasPinturas/></NavLink>
+            <NavLink to="/category/Pintura" className="Link">
+                <button className="btn">Pinturas</button>
+                <SubCategoriasPinturas/>
+            </NavLink>
 
             <NavLink to="/category/Herramienta" className="Link"><button className="btn">Herramientas</button><SubCategoriasHerramientas/></NavLink>
 
