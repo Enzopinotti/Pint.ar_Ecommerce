@@ -15,13 +15,12 @@ const NavBar = () =>{
                 
                 
                 <Categorias/>
-                
 
-                
 
             </div>
 
             <CartWidget/>
+            
         </nav>
         
     )

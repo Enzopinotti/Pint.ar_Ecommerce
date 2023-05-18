@@ -16,7 +16,9 @@
   }
 
   
-
+p{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 
 .main{
     
@@ -26,7 +28,7 @@
     align-items: center;
     user-select: none;
     
-    background-image: url(/public/assets/fondoMain.png);
+   
     background-size:cover;
     position: relative;
     margin-top: 7rem;
@@ -35,6 +37,27 @@
 
 button{
     cursor: pointer;
+}
+
+.botonClasico{
+    width: 100%;
+    height: 2rem;
+    border-radius: 1rem;
+    align-self: center;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.BotonIrAlCarrito{
+    width: 100%;
+    height: 2rem;
+    border-radius: 1rem;
+    align-self: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 .main .Error404{
@@ -49,7 +72,7 @@ button{
 
 .main .Error404 .TextoError{
     padding: 3rem;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 2rem;
     text-shadow: 1px 1px 4px black;
 }
@@ -69,6 +92,218 @@ button{
     font-size: 2rem;
     margin-top: 15rem;
 }
+
+.main .ContenedorCart{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin-top: 4rem;
+    margin-bottom: 5rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    align-items: center;
+}
+
+.main .ContenedorCart .CartTitulo{
+    display: flex;
+    width: 100%;
+    justify-content:center;
+}
+.main .ContenedorCart .CartTitulo h2{
+    display: flex;
+    align-items: center;
+    
+    
+   
+    
+}
+
+.main .ContenedorCart .CartTitulo  .botonVolver{
+    width: 6rem;
+    display: flex;
+    position: relative;
+    right: 36rem;
+    
+ 
+}
+.botonVolver:hover{
+    animation: slide-ir-y-volver 1s;
+}
+
+.main .ContenedorCart .Cart{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.main .ContenedorCart .Cart .CartProductos{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartTitulos{
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+    padding-left: 2.5rem;
+    border-bottom: 1px solid black;
+    
+}
+
+.CartTitulos h3:nth-child(1){
+    position: relative;
+    right: 6.5rem;
+}
+.CartTitulos h3:nth-child(2){
+    position: relative;
+    left: 6rem;
+}
+
+.CartTitulos h3:nth-child(3){
+    position: relative;
+    left: 4rem;
+}
+
+.CartTitulos h3:nth-child(4){
+    position: relative;
+    left: 2.9rem;
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido{
+    margin-bottom: 2rem;
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart{
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: solid white 1px;
+    margin-top: 1rem;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemInfo{
+    display: flex;
+    position: relative;
+    right: 2.5rem;
+    width: 24rem;
+    height: 10rem;
+}
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemInfo img{
+    width: 10rem;
+    height: 10rem;
+    
+}
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemInfo .itemCartinfoNombre{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 0.5rem;
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemPrecio{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    right: 1.5rem;
+
+}
+
+.itemPrecio h4{
+    position: relative;
+    right: 3.3rem;
+}
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemCantidad{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    right: 3rem;
+
+}
+
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemCantidad .contenedor-item-count{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: center;
+    margin-bottom: 0rem;
+    padding: 0;
+    width: 8rem;
+    height: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+   
+
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemCantidad .contenedor-item-count .botonCart{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s ease-in-out;
+
+    
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemCantidad .contenedor-item-count .botonCart:active {
+  transform: scale(0.60); 
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .Subtotal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    right: 0rem;
+
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido{
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+
+.main .ContenedorCart .Cart .CartResumen{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: 26%;
+    height: 20rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    margin-top: 1rem;
+    border: solid 1px white;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.5rem;
+}
+
+.main .ContenedorCart .Cart .CartResumen h3{
+    display: flex;
+    justify-self: flex-start;
+}
+
+
+
+.main .ContenedorCart .Cart .CartResumen .CartPrecioTotal{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+
 
 .main .wrapper{
     width: 90%;
@@ -107,22 +342,20 @@ button{
 .main .ContenedorCatalogo{
     display: flex;
     flex-direction: column;
-    width: 90%;
-    margin-top: 1rem;
+    width: 95%;
+    margin-top: 4rem;
     margin-bottom: 4rem;
-    background-color: #e9e3e3;
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 10px;
-    box-shadow: 0 5px 5px 4px rgba(0,0,0,.1);
+   
     
     
 }
 
 .main .ContenedorCatalogo .ItemList{
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin-left: 6rem;
-    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 3.4rem;
     margin-bottom: 2rem;
    
 }
@@ -130,15 +363,15 @@ button{
 .main .ContenedorCatalogo .ItemList .Producto{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    
+    align-items: flex-start;
     padding:2rem;
     width: 22.75vw;
-    height: 30rem;
     border: 0.01rem solid rgba(128, 128, 128, 0.2) ;
-    margin-right: 4rem;
+    justify-self: center;
     margin-bottom: 1.5rem;
     border-radius: 1rem;
-    background-color: rgba(32, 28, 34, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
     transition: transform 0.6s ease-in-out;
 
 }
@@ -170,7 +403,33 @@ button{
     
 }
 
+
+.main .ContenedorCatalogo .ItemList .Producto .imagenContenedor{
+    display: flex;
+    align-self: center;
+    justify-self: flex-start;
+    width: 200px;
+    height: 200px;
+    
+}
+
+
+.main .ContenedorCatalogo .ItemList .Producto .imagenContenedor .imagenProducto{
+    width: 200px;
+    height: 200px;
+    
+    
+}
+
+
+
+.main .ContenedorCatalogo .ItemList .Producto .nombreProducto{
+    height: 44.8px;
+    
+}
+
 .main .ContenedorCatalogo .ItemList .Producto .DescripcionProducto{
+    display: flex;
     width: 80%;
     text-align: center;
     height: 7rem;
@@ -178,10 +437,18 @@ button{
 }
 
 .main .ContenedorCatalogo .ItemList .Producto .PrecioProducto{
+    display: flex;
+    font-weight:400;
+    font-size:large;
+    justify-self: flex-end;
     
-    font-weight: bolder;
-    font-size:x-large;
-    
+}
+
+.main .ContenedorCatalogo .ItemList .Producto  .LinkBotonDetalles{
+    display: flex;
+    text-decoration: none;
+    width: 100%;
+    justify-content: center;
 }
 
 
@@ -190,13 +457,13 @@ button{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 35vw;
+    width: 95%;
     align-self: center;
-    margin-top: 2rem;
+    margin-top: 4rem;
     margin-bottom: 2rem;
     border: 0.01rem solid rgba(128, 128, 128, 0.2) ;
-    border-radius: 1.3rem;
-    background-color: rgba(218, 162, 236, 0.5);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 .main .ItemDetail  .botonVolver{
@@ -210,11 +477,14 @@ button{
 }
 
 .main .ItemDetail .ItemDetail-Item{
+    display: flex;
+    justify-content: space-around;
     padding: 1rem;
     border: 0.1rem solid white;
     border-radius: 20px;
     width: 70%;
     transition: transform 0.6s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .main .ItemDetail .ItemDetail-Item:hover{
@@ -228,11 +498,19 @@ button{
     
 }
 
+.main .ItemDetail .ItemDetail-Item .TituloImagen .TituloDetail{
+    
+    
+}
+
 .main .ItemDetail .ItemDetail-Item .informacion{
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    text-align:left;
+    justify-content: center;
+    padding-left: 4rem;
+    border-left: 1px solid black;
     
 }
 
@@ -244,7 +522,7 @@ button{
     flex-direction: column;
     margin-bottom: 2.5rem;
     align-items: center;
-    background-color: rgba(218, 162, 236, 0.2);
+    background-color: rgba(255, 255, 255, 0.7);
     width: 55%;
     align-self: center;
     padding: 1rem;
@@ -270,7 +548,7 @@ button{
     width: 2rem;
     height: 2rem;
     border-radius: 15px;
-    background-color: rgba(218, 162, 236, 0.3);
+    background-color: rgba(255, 255, 255, 0.7);
     transition: transform 0.2s ease-in-out;
 
     
@@ -284,7 +562,7 @@ button{
     width: 2rem;
     height: 2rem;
     border-radius: 15px;
-    background-color: rgba(218, 162, 236, 0.3);
+    background-color: rgba(255, 255, 255, 0.7);
     transition: transform 0.2s ease-in-out;
 }
 .contenedor-item-count .controles .boton-agregar:active {
@@ -301,7 +579,7 @@ button{
 .contenedor-item-count .boton-agregar-carrito{
     padding: 0.2rem;
     border-radius: 6px;
-    background-color: rgba(218, 162, 236, 0.3);
+    background-color: rgba(255, 255, 255, 0.7);
     transition: transform 0.2s ease-in-out;
 }
 .contenedor-item-count .boton-agregar-carrito:active{
@@ -309,3 +587,10 @@ button{
     transform: scale(0.70); 
 }
 
+.containerNosotros{
+    height: 156.2rem;
+    width: 100vw;
+    background-image: url(../../../public/assets/fondoSobreNosotros.png);
+    
+    
+}

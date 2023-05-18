@@ -4,8 +4,6 @@ import 'animate.css';
 
 const ItemCount = ({initial, stock, onAdd}) => {
 
-
-    
     const [cantidad, setCantidad] = useState(initial)
 
     
@@ -34,7 +32,8 @@ const ItemCount = ({initial, stock, onAdd}) => {
 
         <div className='contenedor-item-count'>
 
-            
+            <h3 className='titulo-item-count'>Cantidad a comprar</h3>
+            <br/>
 
             <div className='controles'>
 

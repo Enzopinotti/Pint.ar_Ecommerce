@@ -1,5 +1,4 @@
 import Item from "./Item/Item"
-import ItemDetailContainer from "./ItemDetail/ItemDetailContainer";
 import 'animate.css';
 
 

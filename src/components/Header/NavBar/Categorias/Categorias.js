@@ -7,20 +7,28 @@ const Categorias = () =>{
 
         <ul className="NavBar_Categorias">
 
+            <div className="categoriaPintura">
 
-            <NavLink to="/category/Pintura" className="Link">
-                <button className="btn">Pinturas</button>
+                <NavLink to="/category/Pintura" className="Link">
+                    <button className="btn">Pinturas</button>
+                </NavLink>
+
                 <SubCategoriasPinturas/>
-            </NavLink>
+            </div>
+            
+            <div className="categoriaHerramienta">
 
-            <NavLink to="/category/Herramienta" className="Link"><button className="btn">Herramientas</button><SubCategoriasHerramientas/></NavLink>
-
-            <NavLink to="/Herramientas" className="Link"><button className="btn">Sobre Nosotros</button></NavLink>
-
-       
+                <NavLink to="/category/Herramienta" className="Link">
+                    <button className="btn">Herramientas</button>
+                </NavLink>
+                
+                <SubCategoriasHerramientas/>
+            </div>
             
 
-       </ul>
+            <NavLink to="/SobreNosotros" className="Link"><button className="btn">Sobre Nosotros</button></NavLink>
+
+        </ul>
         
     )
 }

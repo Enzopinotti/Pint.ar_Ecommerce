@@ -4,21 +4,15 @@ import { Link } from "react-router-dom"
 const Header = ()=>{
     return(
         <header className="header" >
-            
-            <Link to="/" className="Link">
+        <Link to="/" className="Link_marca">
             <div className="header_marca">
-
-                <img src="/assets/pintureria-logo.png" width={"90px"}/  >
-
-                <h1 className="header_titulo" >Pint.Ar
-                </h1>
-
+                <h1 className="header_titulo" >Pint.ar</h1>
             </div>
-            </Link>
-            
+        </Link>
 
-            <NavBar/>
+        <NavBar/>
             
+        
         </header>
     )
 }

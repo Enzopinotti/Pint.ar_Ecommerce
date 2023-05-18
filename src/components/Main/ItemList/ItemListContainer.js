@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import ItemList from './ItemList';
 import { useParams } from 'react-router-dom';
+import { getProducts , getProductForCategory} from '../../../utils';
 
 const ItemListContainer = ({Subcategoria}) => {
   
@@ -13,18 +14,14 @@ const ItemListContainer = ({Subcategoria}) => {
     const GetElementByCategory = (CategoryBuscado) => {
 
       setTimeout(() => {
-        fetch('/json/productos.json')
-        .then(res => res.json())
-        .then(datos =>{ 
-          
-          if(Subcategoria == true){
-            SetProducto(datos.filter(producto => producto.categoriaSec == CategoryBuscado))
-          }else{
-            SetProducto(datos.filter(producto => producto.categoriaPrim === CategoryBuscado))
-          }
-          
-            
+        
+        const res = getProductForCategory(CategoryBuscado, Subcategoria)
+        .then((datos)=>{
+
+          SetProducto(datos)
+
         })
+        
       },  500)
 
     }
@@ -33,16 +30,18 @@ const ItemListContainer = ({Subcategoria}) => {
 
       if(categoryId == undefined){
         setTimeout(() => {
-          fetch('/json/productos.json')
-          .then(res => res.json())
-          .then(datos =>{ 
+          const res = getProducts()
+          .then((datos)=>{
             
             SetProducto(datos)
-  
           })
+
+          
         },  500)
       }else{
+
         GetElementByCategory(categoryId)
+        
       }
         
       
@@ -50,6 +49,7 @@ const ItemListContainer = ({Subcategoria}) => {
       
     
     return (
+      
       <ItemList productos={Producto}  />
     )
 
