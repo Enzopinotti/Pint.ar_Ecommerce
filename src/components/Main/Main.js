@@ -3,11 +3,14 @@ import SobreNosotros from "../Main/ItemList/SobreNosotros/SobreNosotros"
 import { Route , Routes } from "react-router-dom"
 import ItemDetailContainer from "./ItemList/ItemDetail/ItemDetailContainer"
 import CartContainer from "../Main/ItemList/Cart/CartContainer"
+import Checkout from "../Main/ItemList/Checkout/Checkout"
+import CheckoutContainer from "./ItemList/Checkout/CheckoutContainer"
 
 
 
 
-const Main = (props) => {
+
+const Main = () => {
   return (
     
     <main className="main" >
@@ -23,6 +26,8 @@ const Main = (props) => {
         <Route path="/Item/:itemId" element={<ItemDetailContainer/>}/>
         
         <Route path="/carrito" element={<CartContainer/>}/>
+
+        <Route path="/checkout" element={<CheckoutContainer/>}/>
 
         <Route path="/sobreNosotros" element={<SobreNosotros/>}/>
 

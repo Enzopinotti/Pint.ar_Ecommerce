@@ -15,37 +15,59 @@ const CustomProvider = ({children}) => {
       
       if(productoCarrito.some(prod => prod.id === producto.id)) return
       if(cantidad === 0) return
-      
-      
-      console.log(producto)
       SetCantidadCarrito(cantidadCarrito + cantidad)
       SetProductoCarrito([...productoCarrito, producto])
       
     }
 
-    const eliminarDelCarrito = (cantidad, producto) => {
-      SetCantidadCarrito(cantidadCarrito - cantidad)
-      
-    }
-
-    const limpiarElCarrito = () => {
+    const LimpiarElCarrito = () => {
       SetCantidadCarrito(0)
       SetProductoCarrito([])
+      return productoCarrito
     }
 
-    const RemoverItem = (itemId) => {
-      const  newCart = productoCarrito.filter(item => item.id !== itemId)
-      SetCantidadCarrito(newCart)
+    const RemoverItem = (id, cantidad) => {
+      
+      const  newCart = productoCarrito.filter(item => item.id !== id)
+      SetCantidadCarrito(cantidadCarrito - cantidad)
+      SetProductoCarrito(newCart)
+      return productoCarrito
     
     }
 
+    const ModificarCantidad = (id, cantidad) => {
+
+      let aumento = false
+
+      const newCart = productoCarrito.map(item => {
+        if(item.id === id){
+          if(item.cantidad<cantidad){
+            aumento = true
+          }
+          item.cantidad = cantidad
+        }
+        return item
+      })
+      SetProductoCarrito(newCart)
+
+      if(aumento){
+        SetCantidadCarrito(cantidadCarrito + 1)
+      }else{
+        SetCantidadCarrito(cantidadCarrito - 1)
+      }
+     
+    }
+      
+    
+
     const valorDelContexto = {
-      eliminarDelCarrito,
       agregarAlCarrito,  
+      LimpiarElCarrito,
+      RemoverItem,
+      ModificarCantidad,
+
       cantidadCarrito,
       productoCarrito,
-      limpiarElCarrito,
-      RemoverItem,
 
     }
 

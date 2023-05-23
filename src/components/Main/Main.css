@@ -39,12 +39,14 @@ button{
     cursor: pointer;
 }
 
-.botonClasico{
-    width: 100%;
+
+.botonLimpiarCarrito{
+    width: 50%;
     height: 2rem;
     border-radius: 1rem;
     align-self: center;
     background-color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
 }
 
 .BotonIrAlCarrito{
@@ -114,7 +116,7 @@ button{
     align-items: center;
     
     
-   
+    
     
 }
 
@@ -124,7 +126,7 @@ button{
     position: relative;
     right: 36rem;
     
- 
+    
 }
 .botonVolver:hover{
     animation: slide-ir-y-volver 1s;
@@ -157,26 +159,30 @@ button{
 }
 .CartTitulos h3:nth-child(2){
     position: relative;
-    left: 6rem;
+    left: 5rem;
 }
 
 .CartTitulos h3:nth-child(3){
     position: relative;
-    left: 4rem;
+    left: 1.7rem;
 }
 
 .CartTitulos h3:nth-child(4){
     position: relative;
-    left: 2.9rem;
+    right:0.5rem
 }
 
 .main .ContenedorCart .Cart .CartProductos .CartProductosContenido{
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    
 }
 
 .main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart{
     display: flex;
     justify-content: space-around;
+    align-items: center;
     padding: 2rem;
     background-color: rgba(255, 255, 255, 0.6);
     border: solid white 1px;
@@ -212,7 +218,7 @@ button{
     justify-content: center;
     position: relative;
     right: 1.5rem;
-
+    
 }
 
 .itemPrecio h4{
@@ -225,7 +231,7 @@ button{
     justify-content: center;
     position: relative;
     right: 3rem;
-
+    
 }
 
 
@@ -240,8 +246,8 @@ button{
     height: 3rem;
     padding-left: 1rem;
     padding-right: 1rem;
-   
-
+    
+    
 }
 
 .main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemCantidad .contenedor-item-count .botonCart{
@@ -250,30 +256,39 @@ button{
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.7);
     transition: transform 0.2s ease-in-out;
-
+    
     
 }
 
 .main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .itemCantidad .contenedor-item-count .botonCart:active {
-  transform: scale(0.60); 
+    transform: scale(0.60); 
 }
 
-.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .itemCart .Subtotal{
+ .CartProductosContenido .itemCart .Subtotal{
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
     right: 0rem;
-
+    
 }
 
-.main .ContenedorCart .Cart .CartProductos .CartProductosContenido{
+.main .ContenedorCart .Cart .CartProductos .CartBotonLimpiar{
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    
-    
+    justify-content: center;
 }
 
+.main .ContenedorCart .Cart .CartProductos .CartBotonLimpiar .botonLimpiarCarrito{
+    width: 50%;
+    height: 2rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartBotonLimpiar .botonLimpiarCarrito:active{
+    transform: scale(0.70); 
+}
 
 .main .ContenedorCart .Cart .CartResumen{
     display: flex;
@@ -303,7 +318,34 @@ button{
     justify-content: space-between;
 }
 
+.main .ContenedorCart .Cart .CartResumen .botonClasico{
+    width: 100%;
+    height: 2rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s ease-in-out;
+}
 
+.main .ContenedorCart .Cart .CartResumen .botonClasico:active{
+    transform: scale(0.70); 
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .CartNoProductos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .CartNoProductos .TituloNoProductos{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+}
+
+.main .ContenedorCart .Cart .CartProductos .CartProductosContenido .CartNoProductos .carritoVacio{
+    width: 15rem;
+}
 
 .main .wrapper{
     width: 90%;
@@ -498,10 +540,7 @@ button{
     
 }
 
-.main .ItemDetail .ItemDetail-Item .TituloImagen .TituloDetail{
-    
-    
-}
+
 
 .main .ItemDetail .ItemDetail-Item .informacion{
     display: flex;
@@ -590,7 +629,222 @@ button{
 .containerNosotros{
     height: 156.2rem;
     width: 100vw;
-    background-image: url(../../../public/assets/fondoSobreNosotros.png);
+    background-image: url(../../../public/assets/fondos/fondoSobreNosotros.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+}
+.sectionNosotros1{
+    width: 100vw;
+    height: 52.2rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.articleNosotros1{
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 29rem;
+    height: 30rem;
+    position: relative;
+    top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.articleNosotros2{
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 19rem;
+    height: 30rem;
+    position: relative;
+    top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.articleNosotros3{
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 19rem;
+    height: 30rem;
+    position: relative;
+    top: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divNosotros1{
+    
+    width: 26.5rem;
+    height: 26.5rem;
+    background-color: rgba(255, 255, 255, 0.7);;
+}
+
+.divNosotros2{
+    
+    width: 17rem;
+    height: 26.5rem;
+    background-color: rgba(255, 255, 255, 0.7);;
+}
+
+.divNosotros3{
+    
+    width: 17rem;
+    height: 26.5rem;
+    background-color: rgba(255, 255, 255, 0.7);;
+}
+
+.sectionNosotros2{
+    width: 100vw;
+    height: 52.55rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.articleNosotros4{
+    width: 20rem;
+    height: 20rem;
+    background-color: rgba(255, 255, 255, 0.0);
+    position: relative;
+    right: 0rem;
+    display: flex;
+    align-items: center;
+    top: 3rem;
+}
+.articleNosotros5{
+    width: 23rem;
+    height: 23rem;
+    
+    align-self: center;
+    position: relative;
+    left: 0rem;
+    bottom: 2rem;
+}
+
+.articleNosotros5 .gifNosotros{
+    width: 23rem;
+    height: 23rem;
+    border: 2px solid white;
+    border-radius: 1000rem;
+    box-shadow: inset 0 0 100px rgb(255, 255, 255);
+
+}
+
+.articleNosotros6{
+    width: 25rem;
+    height: 20rem;
+    background-color: rgba(255, 255, 255, 0.0);
+    align-self: flex-end;
+    position: relative;
+    right:2rem;
+    bottom: 3rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
     
     
+}
+
+.h1Nosotros2{
+    display: flex;
+    font-size: 3.6rem;
+    text-align: start;
+    justify-self: center;
+    color: white;
+    text-shadow: 7px 3px black;
+    -webkit-text-stroke-width: 0.1px;
+    -webkit-text-stroke-color: black;
+    
+}
+
+.h1Nosotros3{
+    display: flex;
+    font-size: 3.6rem;
+    text-align: end;
+    justify-self: center;
+    color: white;
+    text-shadow: 7px 3px black;
+    -webkit-text-stroke-width: 0.1px;
+    -webkit-text-stroke-color: black;
+    
+}
+
+.sectionNosotros3{
+    width: 100vw;
+    height: 51.50rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.articleNosotros7{
+    width: 20rem;
+    height: 20rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    
+    
+}
+
+.main .checkout{
+    
+    margin-top: 6rem;
+    margin-bottom: 5rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+
+
+
+.main .checkout .checkoutForm{
+    display: flex;
+    border: 1px white solid;
+    flex-direction: column;    
+    width: 80%;
+    align-self: center;
+    justify-content: space-around;
+    padding: 3rem;
+    margin: 2rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.5rem;
+    
+}
+
+.main .checkout .botonVolver{
+    width: 6rem;
+    display: flex;
+    align-self: center;
+}
+
+.main .checkout .checkoutForm .checkoutTitulo{
+    display: flex;
+    justify-content: center;
+    
+}
+.main .checkout .checkoutForm div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+
+}
+
+.main .checkout .checkoutForm div label{
+    position: relative;
+    right: 8.2rem;
+    width: 9rem;
+    margin-bottom: 0.5rem;
+    
+
+}
+
+.main .checkout .checkoutForm .checkoutInput{
+    display: flex;
+    width: 40%;
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    border: grey solid 1px
 }

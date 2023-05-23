@@ -2,32 +2,33 @@ import React from 'react'
 import { useState, useContext } from 'react'
 import 'animate.css';
 
-import { Context } from '../../../../Providers/CustomProvider'
-
-const ItemCountCart = ({initial, stock, cambiarSubtotal}) => {
 
 
-    
-    const {} = useContext(Context);
+const ItemCountCart = ({initial, stock, onAdd, onRemove, id}) => {
+
+
 
     const [cantidad, setCantidad] = useState(initial)
 
     
-    const handleAgregar = (e) => {
+    const handleAgregar = () => {
         if(cantidad < stock){
 
             setCantidad(cantidad + 1)
-            cambiarSubtotal(cantidad + 1)
+            
+            onAdd(id, cantidad + 1)
+            
         }
         
     }
     
-    const handleQuitar = (e) => {
+    const handleQuitar = () => {
 
         if(cantidad > 1){
 
             setCantidad(cantidad - 1)
-            cambiarSubtotal(cantidad - 1)
+            console.log(cantidad)
+            onRemove(id, cantidad - 1)
         }
         
     }

@@ -1,15 +1,28 @@
 import { useContext, useState} from 'react';
 import ItemCount from './ItemCount/ItemCount';
 import {Context} from './../../../Providers/CustomProvider';
-import  Skeleton  from  'react-loading-skeleton' 
 import  'react-loading-skeleton/dist/skeleton.css'
 import { Link } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
 
 
 
 
 const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descripcion, producto}) => {
 
+
+    function currencyFormatter({ currency, value}) {
+
+      const precioFormato = new Intl.NumberFormat("es-AR", {
+          style: 'currency',
+          minimumFractionDigits: 2,
+          currency
+      }) 
+
+      return precioFormato.format(value)
+    } 
+
+    const precioFinal = currencyFormatter({currency: "ARS", value:precio})
 
     const [cantidadSumada, setCantidadSumada] = useState(0);
     
@@ -30,6 +43,7 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
     }
     
     if(nombre === undefined){
+      
       return (
     
         <article className="ItemDetail">
@@ -130,15 +144,15 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
   
             <section className='informacion'>
   
-              <p className='info'><strong>Categoria: </strong>{categoriaPrim ||  < Skeleton />}</p>
+              <p className='info'><strong>Categoria: </strong>{categoriaPrim}</p>
   
               <br/>
   
-              <p className='info'><strong>Precio: </strong>{precio ||  < Skeleton />}</p>
+              <p className='info'><strong>Precio: </strong>{precioFinal}</p>
   
               <br/>
   
-              <p className='info'><strong>Stock: </strong> {stock ||  < Skeleton />}</p>
+              <p className='info'><strong>Stock: </strong> {stock} {stock === 1 ? "Unidades" : "Unidades"}</p>
   
               <br/>
   

@@ -6,16 +6,26 @@ import {useContext, useEffect, useState} from 'react';
 
 const CartContainer = () => {
 
-    const {cantidadCarrito, productoCarrito} = useContext(Context);
-
-    console.log(productoCarrito)
-    console.log(cantidadCarrito)
+    const {cantidadCarrito, productoCarrito, LimpiarElCarrito, RemoverItem} = useContext(Context);
+    
+    
     
     const [Productos, SetProductos] = useState([])
+    
     const navigate = useNavigate();
 
+    const eliminarDelCarrito = (id, cantidad) => {
+
+        SetProductos(RemoverItem(id, cantidad))
+
+    }
+
+    const BorrarCarrito = (productos) => {
+
+        SetProductos(LimpiarElCarrito(productos))
+    }
     
-    console.log(Productos)
+    
 
     const volverAtras = ()=> {
 
@@ -38,13 +48,13 @@ const CartContainer = () => {
         }
         
 
-      }, [])
+      }, [productoCarrito])
 
     return ( 
 
         
 
-        <Cart navigate={volverAtras} productos={Productos} />
+        <Cart navigate={volverAtras} productos={Productos} eliminarDelCarrito={eliminarDelCarrito} BorrarCarrito={BorrarCarrito} />
 
        
 

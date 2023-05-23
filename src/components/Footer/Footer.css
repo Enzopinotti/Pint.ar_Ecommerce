@@ -1,7 +1,7 @@
 
 .footer{
-  background-image: url(/public/assets/fondoFooter3.png);
-  height: 15rem;
+  background-image: url(/public/assets/fondos/fondoFooter.png);
+  height: 13rem;
   display: flex;
   align-items: center;
   justify-content: space-around;

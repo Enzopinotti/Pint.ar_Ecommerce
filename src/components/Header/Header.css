@@ -1,16 +1,16 @@
 
 .header{
     display: flex;
-    background-color: rgb(255, 255, 255, 0.8);
+   
     justify-content: center;
     margin: 1.3rem;
     justify-self: center;
     user-select: none;
     position: fixed;
-    width: 95%;
+    width: 100vw;
     z-index: 2;
     align-self: center;
-    border-radius: 10px;
+    
     
 }
 
@@ -23,20 +23,23 @@
 
 .Link_marca{
     text-decoration: none;
-    position: absolute;
-    right: 80.3rem;
+    position: relative;
+    
+    top: 0.5px;
     bottom: 0;
     height: 100%;
-    background-image: url(/public/assets/logoBackground.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    
+    
 }
   
 .header_marca{
     display: flex;
-    
+    background-image: url(/public/assets/logoBackground.png);
+    background-repeat: repeat-y;
+    background-size: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height: 100%;
 }
   
 
@@ -47,6 +50,8 @@
     font-size:2.5rem;
     padding: 1rem;
     height: 100%;
+    -webkit-text-stroke-width: 0.1px;
+    -webkit-text-stroke-color: black;
     
 
 }
@@ -56,9 +61,11 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 80rem;
-    
-   
+    width: 81rem;
+    background-color: rgb(255, 255, 255, 0.8);
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     
 }
 
@@ -66,13 +73,19 @@
 
     padding: 0.5rem;
     padding-bottom: 1rem;
-    width: 50rem;
+    width: 55rem;
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     
 }
 
 .navBar .NavBar_Contenedor .NavBar_BarraBusqueda{
 
     display: flex;
+    justify-content: center;
     width: 100%;
 }
 
@@ -81,12 +94,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 
 }
 
 .navBar .NavBar_Contenedor .NavBar_BarraBusqueda .Formulario_Busqueda .Input_Busqueda{
 
-    width: 55.05rem;
+    width: 100%;
     height: 1.9rem;
     border-radius: 15px;
     z-index: -0.3;
@@ -100,8 +114,7 @@
     text-indent: 10px; 
 }
 .navBar .NavBar_Contenedor .NavBar_BarraBusqueda .Formulario_Busqueda .Submit_Lupa{
-    position: relative;
-    right: 1.9rem;
+    
     z-index: 1;
     height: 1.6rem;
 }
@@ -115,13 +128,14 @@
     border-radius: 15px;
     height: 1.7rem;
     transition: height 0.7s ease;
-    width: 55.05rem;
+    width: 100%;
     
 }
 
 .navBar .NavBar_Contenedor .NavBar_Categorias:hover{
     height: 6.3rem;
 }
+
 
 .navBar .NavBar_Contenedor .NavBar_Categorias{
     display: flex;
@@ -192,7 +206,9 @@
 .navBar .CartWidget{
     display: flex;
     position: relative;
-    top: 20px
+    top: 20px;
+    
+    
 
 
 }
@@ -205,13 +221,141 @@
 }
 
 .navBar .CartWidget .notificacion{
-background-color: rgb(0, 0, 0);
-color: beige;
-height: 20%;
-width: 1.4rem;
-padding: 0.3rem;
-border-radius: 1rem;
-position: relative;
-bottom: 8px;
-text-align: center;
+    background-color: rgb(0, 0, 0);
+    color: beige;
+    height: 20%;
+    width: 1.4rem;
+    padding: 0.3rem;
+    border-radius: 1rem;
+    position: relative;
+    bottom: 8px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+@media screen and (max-width: 1200px) {
+    
+    .navBar .NavBar_Contenedor{
+
+        
+        width: 40rem;
+        
+        
+    }
+}
+
+@media screen and (max-width: 920px) {
+   
+    .navBar .NavBar_Contenedor{
+
+        
+        width: 25rem;
+        
+        
+    }
+
+    
+
+    .navBar .NavBar_Contenedor .NavBar_Categorias .btn{
+        
+        padding-left: 1rem;
+        padding-right: 1rem;
+        
+        
+    }
+    .navBar .NavBar_Categorias   .NavBar_SubCategorias a .btnSub{
+        
+        left: 0.9rem;
+        
+    }
+
+
+}
+
+@media screen and (max-width: 700px) {
+   
+    .navBar .NavBar_Contenedor{
+
+        
+        width: 21rem;
+        
+        
+    }
+
+    .navBar .NavBar_Contenedor .NavBar_Categorias{
+        
+        border: 0px solid black;
+        
+        
+    }
+
+    .navBar .NavBar_Contenedor .NavBar_Categorias .btn{
+        
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        border: 2px solid black;
+        border-radius: 15px;
+        
+    }
+    .navBar .NavBar_Categorias   .NavBar_SubCategorias a .btnSub{
+        
+        left: 0.9rem;
+        
+    }
+    .header_titulo{
+
+        color: rgb(255, 255, 255);
+        font-size:2rem;
+        padding: 1rem;
+        height: 100%;
+        -webkit-text-stroke-width: 0.1px;
+        -webkit-text-stroke-color: black;
+        
+    
+    }
+    .header_marca{
+        height: 5rem;
+        width: 8rem;
+
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    .navBar .NavBar_Contenedor{
+
+        
+        width: 18rem;
+        
+        
+    }
+
+    .navBar .CartWidget{
+        display: none;
+        position: relative;
+        top: 20px;
+    
+    }
+
+    .navBar .NavBar_Contenedor .NavBar_Categorias .categoriaPintura a button{
+        
+        font-size: small;
+        
+    }
+    .navBar .NavBar_Contenedor .NavBar_Categorias .categoriaHerramienta a button{
+        
+        font-size: small;
+        
+    }
+    .navBar .NavBar_Contenedor .NavBar_Categorias  .Link .btn{
+        
+        font-size: small;
+        
+    }
+
 }

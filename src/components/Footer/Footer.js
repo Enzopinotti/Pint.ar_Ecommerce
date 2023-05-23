@@ -3,16 +3,16 @@ const Footer = ()=>{
         <footer className="footer">
             <div className="formasDePago">
                 <h4>Formas de Pago</h4>
-                <img src="/assets/formas-pago-2.jpg" width={"250px"} alt="Visa"/>
+                <img src="/assets/formasDePago.jpg" width={"250px"} alt="Formas de Pago"/>
             </div>
             <div className="RedesSociales">
                 <h4>Seguinos en</h4>
                 <section className="imgSociales">
-                    <img src="/assets/logoInstagram.png" width={"30px"} alt="Instagram"/>
-                    <img src="/assets/logoFacebook.png" width={"30px"} alt="Instagram"/>
-                    <img src="/assets/logoTwitter.png" width={"30px"} alt="Instagram"/>
-                    <img src="/assets/logoLinkedin.png" width={"30px"} alt="Instagram"/>
-                    <img src="/assets/logoYoutube.png" width={"30px"} alt="Instagram"/>
+                    <img src="/assets/redesSociales/logoInstagram.png" width={"30px"} alt="Instagram"/>
+                    <img src="/assets/redesSociales/logoFacebook.png" width={"30px"} alt="Instagram"/>
+                    <img src="/assets/redesSociales/logoTwitter.png" width={"30px"} alt="Instagram"/>
+                    <img src="/assets/redesSociales/logoLinkedin.png" width={"30px"} alt="Instagram"/>
+                    <img src="/assets/redesSociales/logoYoutube.png" width={"30px"} alt="Instagram"/>
                 </section>
             </div>
             <div className="derechos">

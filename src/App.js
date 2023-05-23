@@ -15,7 +15,7 @@ function App() {
 
         <Header/>
 
-        <Main greeting="Nuestro catalogo"/>
+        <Main/>
 
         <Footer/>
 
