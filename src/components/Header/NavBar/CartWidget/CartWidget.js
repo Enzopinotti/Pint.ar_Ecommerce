@@ -19,7 +19,7 @@ const CartWidget = () =>{
         
         <Link to={"/carrito"} className="Link">
             <div className="CartWidget">
-                <img src="/assets/carrito-de-compras.png" width={"50px"} />
+                <img src="/assets/carrito-de-compras.png" width={"50px"} alt="carrito de compras"/>
                 <h5 className="notificacion"> {cantidad} </h5>
             </div>
         </Link>

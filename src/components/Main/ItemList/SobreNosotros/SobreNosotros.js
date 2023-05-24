@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Slider from '../../Slider/Slider'
 const SobreNosotros = () => {
 
 
@@ -10,7 +10,8 @@ const SobreNosotros = () => {
         <article className='articleNosotros1'>
 
           <div className='divNosotros1'>
-
+            <h3 style={{padding:'1rem'}}>Los Productos de mejor calidad</h3>
+            <Slider />
           </div>
             
         </article>
