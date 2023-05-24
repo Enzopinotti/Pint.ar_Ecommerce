@@ -5,6 +5,8 @@ import { useContext, useState, useEffect } from 'react';
 
 const ItemCart = ({nombre, precio,img, cantidad, stock, id, handleRemoverItem, producto}) => {
 
+    const {ModificarCantidad} = useContext(Context);
+
     function currencyFormatter({ currency, value}) {
 
         const precioFormato = new Intl.NumberFormat("es-AR", {
@@ -18,13 +20,12 @@ const ItemCart = ({nombre, precio,img, cantidad, stock, id, handleRemoverItem, p
     
     const precioFinal = currencyFormatter({currency: "ARS", value:precio})
 
-    const {ModificarCantidad} = useContext(Context);
 
     const [SubTotal , setSubTotal] = useState(precioFinal * cantidad)
 
     const SubTotalFinal = currencyFormatter({currency: "ARS", value:SubTotal})
 
-    console.log(producto)
+    
 
     const removerItem = (id, cantidad) => {
         
@@ -63,7 +64,7 @@ const ItemCart = ({nombre, precio,img, cantidad, stock, id, handleRemoverItem, p
                 <h4>{SubTotalFinal}</h4>
             </section>
             <section className='eliminarItem'>
-                <img onClick={() => removerItem(id, cantidad)} src='/assets/xNegra.png' width={"15rem"}></img>   
+                <img style={{cursor: "pointer"}} onClick={() => removerItem(id, cantidad)} src='/assets/xNegra.png' width={"15rem"}></img>   
             </section>
         </article>
     )

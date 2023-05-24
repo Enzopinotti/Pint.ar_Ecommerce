@@ -554,8 +554,6 @@ button{
 }
 
 
-
-
 .contenedor-item-count{
     display: flex;
     flex-direction: column;
@@ -847,4 +845,103 @@ button{
     padding: 0.4rem;
     border-radius: 0.5rem;
     border: grey solid 1px
+}
+.main .checkout .checkoutForm .checkoutLink{
+    align-self: center;
+}
+
+.main .checkout .checkoutForm .checkoutLink .checkoutBoton{
+    width: 15rem;
+    height: 1.6rem;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s ease-in-out;
+    
+    
+}
+
+.main .checkout .checkoutForm .checkoutLink .checkoutBoton:active {
+    transform: scale(0.60); 
+}
+
+.main .Brief{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin-top: 4rem;
+    margin-bottom: 5rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    align-items: center;
+    
+    
+}
+
+.main .Brief .BriefInfo{
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border: solid 1px white;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.8rem;
+    user-select:text;
+    width: 85%;
+}
+
+.main .Brief .BriefInfo .BriefTitle{
+    align-self: center;
+    text-align: center;
+}
+
+
+.main .Brief .BriefInfo .BriefText{
+    margin-top: 2rem;
+    width: 60%;
+    align-self: center;
+    text-align: center;
+    
+}
+
+.main .Brief .ResumenBrief{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border: solid 1px white;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0.8rem;
+    margin: 2rem;
+
+}
+
+.main .Brief .ResumenBrief .itemBreif{
+    display: flex;
+    padding: 1rem;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.main .Brief .ResumenBrief .itemBreif .itemBreifInfo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12rem;
+    text-align: center;
+
+}
+
+.main .Brief .ResumenBrief .itemBreif .itemBreifInfo img{
+   align-self: center;
+}
+
+.itemBreifInfo:nth-child(1){
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.main .Brief .ResumenBrief .BriefTotal{
+    display: flex;
+    justify-content: space-between;
 }

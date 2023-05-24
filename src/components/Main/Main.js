@@ -5,6 +5,7 @@ import ItemDetailContainer from "./ItemList/ItemDetail/ItemDetailContainer"
 import CartContainer from "../Main/ItemList/Cart/CartContainer"
 import Checkout from "../Main/ItemList/Checkout/Checkout"
 import CheckoutContainer from "./ItemList/Checkout/CheckoutContainer"
+import Brief from "./ItemList/Checkout/Brief/Brief"
 
 
 
@@ -28,6 +29,8 @@ const Main = () => {
         <Route path="/carrito" element={<CartContainer/>}/>
 
         <Route path="/checkout" element={<CheckoutContainer/>}/>
+
+        <Route path="/brief" element={<Brief/>}/>
 
         <Route path="/sobreNosotros" element={<SobreNosotros/>}/>
 

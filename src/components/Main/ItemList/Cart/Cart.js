@@ -1,11 +1,18 @@
 import React from 'react'
 import ItemCart from '../ItemCart/ItemCart'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { Context } from '../../../Providers/CustomProvider'
+
+
 
 const Cart = ({navigate, productos, eliminarDelCarrito, BorrarCarrito}) => {
 
+    
+    const {GuardarTotalVenta} = useContext(Context);
 
+
+    
     function currencyFormatter({ currency, value}) {
 
         const precioFormato = new Intl.NumberFormat("es-AR", {
@@ -26,8 +33,9 @@ const Cart = ({navigate, productos, eliminarDelCarrito, BorrarCarrito}) => {
     }
 
     const [Total, setTotal] = useState(TotalPrecio())
+
     const TotalFinal = currencyFormatter({currency: "ARS", value:Total})
-    console.log(productos)
+    
     
 
     const handleRemoverItem = (id, cantidad) => {
@@ -45,24 +53,14 @@ const Cart = ({navigate, productos, eliminarDelCarrito, BorrarCarrito}) => {
         BorrarCarrito(productos)
     }
         
-    function sumarSubtotales(cantidadNueva, id){
-        
-        productos.map(producto => {
-            if(producto.id === id){
-                producto.cantidad = cantidadNueva
-            }
-        })
-        
-       
-
-
-    }
 
     useEffect(() => {
 
         setTotal(TotalPrecio())
+        
+        GuardarTotalVenta(Total)
 
-    },[productos])
+    })
 
    
     return ( 
@@ -131,7 +129,7 @@ const Cart = ({navigate, productos, eliminarDelCarrito, BorrarCarrito}) => {
                             <></>
                         ):(
                             
-                            <Link to={'/checkout'}style={{textDecoration: 'none' , color: 'black' , width: '100%'}} ><button className='botonClasico'>Comprar</button> </Link>
+                            <Link to={'/checkout'}style={{textDecoration: 'none' , color: 'black' , width: '100%'}} ><button className='botonClasico'>Ver Detalle de Compra</button> </Link>
                             
                         )
 

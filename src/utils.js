@@ -1,5 +1,5 @@
 import {db} from "./firebase"
-import { collection, getDocs, query, where } from "firebase/firestore"
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore"
 
 
 export const getProducts = () => {
@@ -68,7 +68,17 @@ export const getProductForCategory = (categoria, secundaria) => {
         })
 }
 
-const saveSale = () => {
+export const saveOrder = (venta) => {
+    const ordersCollection =  collection( db, 'ordenes')
+    return  addDoc(ordersCollection, venta )
+        .then((respuesta)=>{
+
+            return respuesta.id
+        })
+        .catch((error) => {
+            console.log("hubo un error en la consulta")
+            console.log(error)
+        })
 }
 
 const getProductDetail = () => {

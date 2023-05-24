@@ -33,10 +33,8 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
     }
 
     const Carrito = (cantidad) => {
-      
-      
-      setCantidadSumada(cantidad);
 
+      setCantidadSumada(cantidad);
       producto.cantidad = cantidad;
       agregarAlCarrito(cantidad, producto)
 
@@ -169,7 +167,7 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
             cantidadSumada > 0 ? (
               <div>
 
-                <Link to={"/carrito"} className='Link' > <button className='BotonIrAlCarrito' > Terminar compra </button> </Link>
+                <Link to={"/carrito"} className='Link' > <button className='BotonIrAlCarrito' > Ir Al Carrito </button> </Link>
               
                 <Link to={"/"} className='Link' > <button className='BotonIrAlCarrito' > Seguir Comprando </button> </Link>
 
