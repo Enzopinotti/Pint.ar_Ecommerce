@@ -327,6 +327,40 @@
 
 @media screen and (max-width: 700px) {
 
+    .navBar .NavBar_Contenedor .NavBar_Categorias{
+        height: 7.3rem;
+    }
+
+    .navBar  .NavBar_Categorias .categoriaPintura  .NavBar_SubCategorias a{
+        position: relative;
+        right: 0.8rem;
+    }
+
+    .navBar  .NavBar_Categorias .categoriaPintura .NavBar_SubCategorias a .btnSub{
+        opacity: 1;
+        visibility: visible;
+        border: 2px solid black;
+        border-radius: 10px;
+        margin-top: 0.5rem;
+        position: relative;
+        right: 1rem;
+    }
+
+    .navBar  .NavBar_Categorias .categoriaHerramienta  .NavBar_SubCategorias a{
+        position: relative;
+        right: 0.8rem;
+    }
+
+    .navBar  .NavBar_Categorias .categoriaHerramienta  .NavBar_SubCategorias a .btnSub{
+        opacity: 1;
+        visibility: visible;
+        border: 2px solid black;
+        border-radius: 10px;
+        margin-top: 0.5rem;
+        position: relative;
+        right: 1rem;
+    }
+
     .navBar .NavBar_Contenedor{
 
         
@@ -357,5 +391,7 @@
         font-size: small;
         
     }
+
+   
 
 }

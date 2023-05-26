@@ -657,6 +657,7 @@ button{
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    
 
 }
 .sectionNosotros1{
@@ -810,7 +811,7 @@ button{
     
     align-self: center;
     position: relative;
-    left: 0rem;
+    left: 2rem;
     bottom: 2rem;
 }
 
@@ -1121,15 +1122,21 @@ button{
     
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
 
     .main .ContenedorCatalogo{
        
         width: 85%;
         
+        margin-top: 5rem;
+       
        
         
         
+    }
+
+    .containerNosotros{
+        margin-top: 5rem;
     }
     
 
