@@ -96,7 +96,7 @@ A continuación, se detallan los pasos para instalar y utilizar el proyecto:
 
 ## Demostración y Deploy
 
--Demostración en Línea: Puedes acceder a una demostración en línea de la aplicación en el siguiente enlace: [https://pre-entrega2-pinotti.vercel.app/category/Herramienta/Pinceles]
+-Demostración en Línea: Puedes acceder a una demostración en línea de la aplicación en el siguiente enlace: [https://pre-entrega2-pinotti-enzopinotti.vercel.app/]
 
 GIF
 
