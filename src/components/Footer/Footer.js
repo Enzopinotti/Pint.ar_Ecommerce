@@ -3,7 +3,7 @@ const Footer = ()=>{
         <footer className="footer">
             <div className="formasDePago">
                 <h4>Formas de Pago</h4>
-                <img src="/assets/formasDePago.jpg" width={"250px"} alt="Formas de Pago"/>
+                <img src="/assets/formasDePago.jpg" className="FormasDePagoImg" alt="Formas de Pago"/>
             </div>
             <div className="RedesSociales">
                 <h4>Seguinos en</h4>

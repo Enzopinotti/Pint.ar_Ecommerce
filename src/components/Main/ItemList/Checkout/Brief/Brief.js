@@ -2,6 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { Context } from '../../../../Providers/CustomProvider'
 import ItemBreif from './ItemBreif/ItemBreif'
+import 'animate.css';
 const Brief = () => {
 
 
@@ -12,7 +13,9 @@ const Brief = () => {
 
     if(infoVenta.length === 0){
             return(
-                <div className='Brief'>No hay nada que mostrar</div>
+                <div className='BriefVacio'>
+                    <h2 className='BriefTitleVacio animate__animated animate__pulse animate__infinite'>No hay nada que mostrar, volvé y elegí alguno de nuestros productos</h2>
+                </div>
             )
     }else{
 

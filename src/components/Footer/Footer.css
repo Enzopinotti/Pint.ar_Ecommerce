@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  
+  width: 100vw;
   box-shadow: 0 0px 10px 4px hsla(0, 0%, 0%, 0.8);
 }
 
@@ -22,6 +22,10 @@
 .footer .formasDePago h4{
   
   padding-left: 0.5rem;
+}
+
+.footer .formasDePago .FormasDePagoImg{
+  width: 250px;
 }
 .footer .RedesSociales{
   display: flex;
@@ -58,4 +62,65 @@
   display: flex;
   flex-direction: column;
   justify-content: end;
+}
+
+@media screen and (max-width: 930px) {
+
+  .footer{
+    height: 15rem;
+    flex-wrap: wrap;
+  }
+
+  .footer .derechos{
+    height: 2rem;
+  }
+
+
+}
+
+@media screen and (max-width: 630px) {
+
+  .footer .formasDePago{
+    height: 9rem;
+    
+    
+  
+  }
+  .footer .formasDePago .FormasDePagoImg{
+    width: 180px;
+  }
+
+  .footer .RedesSociales{
+   
+    height: 9rem;
+    width: 13.5rem;
+  }
+  
+}
+
+@media screen and (max-width: 500px) {
+
+  .footer{
+    height: 13rem;
+   
+  }
+
+  .footer .formasDePago{
+    height: 8rem;
+    
+    
+  
+  }
+  .footer .formasDePago .FormasDePagoImg{
+    width: 150px;
+  }
+
+  .footer .RedesSociales{
+    
+    height: 8rem;
+    width: 11.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
 }

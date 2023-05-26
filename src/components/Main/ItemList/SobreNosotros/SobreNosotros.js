@@ -10,8 +10,9 @@ const SobreNosotros = () => {
         <article className='articleNosotros1'>
 
           <div className='divNosotros1'>
-            <h3 style={{padding:'1rem'}}>Los Productos de mejor calidad</h3>
+            
             <Slider />
+
           </div>
             
         </article>
@@ -20,6 +21,10 @@ const SobreNosotros = () => {
 
         <div className='divNosotros2'>
 
+          <h3 style={{ textAlign:'center', paddingTop:'10px', paddingBottom:'10px', fontSize:'20px'}}>Pigmentos 100% Naturales</h3>
+
+          <img src='/assets/pigmentosNaturales.jpg' alt='pigmentosNaturales' className='imgPigmentos' />
+
         </div>
           
         </article>
@@ -27,7 +32,7 @@ const SobreNosotros = () => {
         <article className='articleNosotros3'>
 
         <div className='divNosotros3'>
-
+            <h3>Comprometidos con el medio ambiente</h3>
         </div>
           
         </article>
@@ -59,23 +64,6 @@ const SobreNosotros = () => {
 
       <section  className='sectionNosotros3'>
 
-        <article className='articleNosotros7'>
-
-        
-          
-        </article>
-
-        <article>
-
-          
-
-        </article>
-
-        <article>
-
-          
-
-        </article>
         
 
       </section>

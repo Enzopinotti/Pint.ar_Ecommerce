@@ -54,7 +54,7 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
           <h2>Detalle del producto</h2>
           <br/>
 
-          <div className='ItemDetail-Item'>
+          <div className='ItemDetail-ItemCargando'>
 
             <section className='TituloImagen'>
               
@@ -77,21 +77,21 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
             <br/>
 
   
-            <section className='informacion'>
+            <section className='informacionCargando'>
 
-              <div style={{width: "30rem", display: "flex", justifyContent: "center"}}>< Skeleton width={"10rem"} height={"1rem"}/></div>
+              <div style={{width: "25rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"10rem"} height={"1rem"}/></div>
   
               <br/>
 
-              <div style={{width: "30rem", display: "flex", justifyContent: "center"}}>< Skeleton width={"8rem"} height={"1rem"}/></div>
+              <div style={{width: "30rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"8rem"} height={"1rem"}/></div>
 
               <br/>
 
-              <div style={{width: "30rem", display: "flex", justifyContent: "center"}}>< Skeleton width={"20rem"} height={"1rem"}/></div>
+              <div style={{width: "30rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"20rem"} height={"1rem"}/></div>
 
               <br/>
 
-              <div style={{width: "37.8rem", display: "flex", justifyContent: "center"}}>< Skeleton width={"34rem"} height={"1rem"}/></div>
+              <div style={{width: "37.8rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"34rem"} height={"1rem"}/></div>
               
             </section>
           

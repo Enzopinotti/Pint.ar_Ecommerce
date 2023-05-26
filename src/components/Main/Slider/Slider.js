@@ -58,7 +58,7 @@ const Slider = () => {
 
         return (
             <div>
-                <h1>Cargando...</h1>
+                <h1 style={{padding:'1rem', textAlign:'center', width:'fit-content' , margin:'auto' , marginTop:'5rem' , marginBottom:'5rem' , fontSize:'2rem'}} className='animate__animated animate__pulse animate__infinite'>Cargando...</h1>
             </div>
         )
 
@@ -70,7 +70,7 @@ const Slider = () => {
     
             <div className='sliderContainer'>
         
-               
+                <h3 style={{padding:'1rem'}}>Los Productos de mejor calidad</h3>
 
                 {Imagenes.map((imagen , index) => {
                     
