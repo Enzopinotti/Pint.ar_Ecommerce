@@ -542,6 +542,22 @@ button{
     background-color: rgba(255, 255, 255, 0.7);
 }
 
+.ItemDetail-ItemCargando{
+    display: flex;
+}
+
+.ItemDetail-ItemCargando .TituloImagen{
+    
+    margin-right: 4rem;
+}
+
+.ItemDetail-ItemCargando .TituloImagen .informacionCargando{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
 
 
 .main .ItemDetail .ItemDetail-Item:hover{
@@ -570,7 +586,7 @@ button{
 
 .main .ItemDetail .ItemDetail-Item .informacionCargando{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: start;
     text-align:left;
     justify-content: center;

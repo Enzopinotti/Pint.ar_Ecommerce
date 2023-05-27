@@ -77,21 +77,26 @@ const ItemDetail = ({navigate, img, nombre, precio, categoriaPrim, stock, descri
             <br/>
 
   
-            <section className='informacionCargando'>
+            <section  className='informacionCargando'>
+              <div>
 
-              <div style={{width: "25rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"10rem"} height={"1rem"}/></div>
-  
-              <br/>
+                <div style={{width: "25rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"10rem"} height={"1rem"}/></div>
+    
+                <br/>
 
-              <div style={{width: "30rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"8rem"} height={"1rem"}/></div>
+                <div style={{width: "30rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"8rem"} height={"1rem"}/></div>
 
-              <br/>
+                <br/>
 
-              <div style={{width: "30rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"20rem"} height={"1rem"}/></div>
+                <div style={{width: "30rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"20rem"} height={"1rem"}/></div>
 
-              <br/>
+                <br/>
 
-              <div style={{width: "37.8rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"34rem"} height={"1rem"}/></div>
+                <div style={{width: "37.8rem", display: "flex", justifyContent: "start"}}>< Skeleton width={"34rem"} height={"1rem"}/></div>
+
+              </div>
+
+              
               
             </section>
           
