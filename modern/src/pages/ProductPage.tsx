@@ -5,29 +5,38 @@ import { catalogRepository } from "../data/catalogRepository";
 import type { Product } from "../domain/product";
 import { formatMoney } from "../format";
 
+interface ProductRequestState {
+  requestedId: string;
+  product: Product | null;
+}
+
 export function ProductPage() {
   const { itemId = "" } = useParams();
-  const [product, setProduct] = useState<Product | null | undefined>(undefined);
+  const [request, setRequest] = useState<ProductRequestState>({
+    requestedId: "",
+    product: null,
+  });
   const [quantity, setQuantity] = useState(1);
   const { add, state } = useCart();
 
   useEffect(() => {
     let active = true;
-    setProduct(undefined);
-    catalogRepository.getById(itemId).then((item) => {
-      if (active) setProduct(item);
+    catalogRepository.getById(itemId).then((product) => {
+      if (active) setRequest({ requestedId: itemId, product });
     });
     return () => {
       active = false;
     };
   }, [itemId]);
 
-  if (product === undefined)
+  if (request.requestedId !== itemId)
     return (
       <p role="status" className="state-card page-state">
         Cargando detalle…
       </p>
     );
+
+  const product = request.product;
   if (product === null)
     return (
       <section className="state-card page-state">
