@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:pages": "tsc --noEmit && vite build --base /Pint.ar_Ecommerce/",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
