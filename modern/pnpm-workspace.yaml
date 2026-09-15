@@ -1,3 +1,5 @@
 packages: []
 minimumReleaseAge: 1440
 strictPeerDependencies: true
+allowBuilds:
+  "@parcel/watcher": false
