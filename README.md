@@ -1,97 +1,120 @@
 # Pint.ar — ecommerce educativo · 2023 → 2026
 
-Pint.ar nació en 2023 como un proyecto de aprendizaje de React realizado en el contexto de Coderhouse y también documentado como parte de un proyecto de Ingeniería Industrial en UTN FRLP.
+Pint.ar nació en 2023 como un proyecto de aprendizaje de React realizado en Coderhouse y documentado también como parte de un proyecto de Ingeniería Industrial en UTN FRLP.
 
-La modernización 2026 **no reescribe esa historia**. Mantiene el proyecto original auditable en Git y agrega una autoridad mantenida separada bajo [`modern/`](./modern/).
+La modernización 2026 **no reescribe esa historia**. El proyecto original permanece auditable en Git y la autoridad mantenida vive separada bajo [`modern/`](./modern/).
 
-## Estado del repositorio
+## Dos eras, dos autoridades
 
 | Etapa | Autoridad | Propósito |
 | --- | --- | --- |
 | 2023 | commit [`3224d89c0c512b3509cea25f1c49a119d371e338`](https://github.com/Enzopinotti/Pint.ar_Ecommerce/tree/3224d89c0c512b3509cea25f1c49a119d371e338) | entrega histórica React + CRA + Firebase/Firestore |
-| 2026 | [`modern/`](./modern/) | reconstrucción mantenida, testeable y explícitamente educativa |
+| 2026 | [`modern/`](./modern/) | storefront mantenido, testeable, reproducible y explícitamente educativo |
 
-El deploy de Vercel documentado por la entrega original sigue siendo **evidencia histórica** mientras se califica un cutover separado para la versión 2026:
+El Vercel de la entrega original sigue siendo evidencia histórica:
 
 `https://pre-entrega2-pinotti-enzopinotti.vercel.app/`
 
-No se presenta esa URL como autoridad de la reconstrucción moderna hasta completar la calificación pública.
+No se presenta como autoridad de producción 2026 hasta cerrar el cutover público de la reconstrucción moderna.
 
-## Qué preserva la versión 2026
+## Rol dentro del portfolio
 
-La reconstrucción conserva las capacidades que hacían interesante al ejercicio original:
+Pint.ar es el showcase de **storefront / product engineering para ecommerce**. La segunda pieza ecommerce del portfolio será **Meow Matrix**, que conserva frontend y backend históricos y se modernizará como caso full-stack.
 
-- catálogo y categorías;
+Esa división es deliberada: Pint.ar no inventa una API, autenticación o pagos sólo para sumar tecnología. Su foco es hacer muy bien catálogo, navegación, carrito, checkout demo, experiencia responsive, accesibilidad, diseño, reproducibilidad y calidad de frontend.
+
+## Experiencia ecommerce 2026
+
+La autoridad moderna incluye:
+
+- catálogo tipado y validado en runtime;
+- búsqueda textual normalizada;
+- categorías y subcategorías por ruta;
+- filtro de stock demo;
+- ordenamiento determinístico por precio, nombre, stock u orden original;
 - detalle de producto;
-- rutas React;
-- carrito compartido;
-- cantidades, stock demostrativo y totales;
-- formulario de checkout;
-- confirmación de orden;
-- página de historia / Sobre Nosotros.
+- carrito inmutable con límites de stock y totales derivados;
+- persistencia versionada del carrito en `sessionStorage`;
+- checkout guest demo con validación;
+- guard sincrónico contra doble submit;
+- carrito que sólo se limpia después de una persistencia exitosa;
+- recuperación ante error de persistencia;
+- confirmación `DEMO-*` que no finge pago, email ni reserva de stock;
+- rutas profundas con fallback SPA;
+- responsive calificado en 360 / 768 / 1440.
 
-Pero cambia los contratos que en 2023 eran propios de un ejercicio inicial:
-
-- el carrito usa líneas inmutables y deriva cantidad/total desde una única fuente de verdad;
-- los productos no se mutan para agregarles cantidad;
-- el checkout valida antes de persistir;
-- un guard sincrónico evita envíos duplicados;
-- el carrito sólo se limpia después de una persistencia exitosa;
-- un error conserva el carrito y deja una acción recuperable;
-- la confirmación ya no promete un email que el repositorio no implementa;
-- no se finge procesamiento de pagos, reserva transaccional de stock ni autenticación;
-- el runtime actual no depende del Firebase histórico mientras sus reglas de Firestore no estén versionadas y calificadas.
-
-## Límite de seguridad y datos
-
-La aplicación 2026 es un **ecommerce educativo/demo local**, no una plataforma de pagos u órdenes comerciales.
-
-El catálogo actual usa fixtures determinísticos versionados en el repositorio. Los precios y stocks son valores demostrativos y no se presentan como precios comerciales vigentes ni como una reproducción exacta de los documentos históricos de Firestore.
-
-El checkout usa un `OrderRepository` local que devuelve IDs `DEMO-*`. Los datos ingresados en el formulario no se envían al Firebase histórico ni a otro servicio remoto.
-
-La configuración web de Firebase que existe en la entrega 2023 se conserva como parte de la historia. Configuración de cliente y autorización son conceptos distintos: la seguridad real de Firestore depende de reglas/configuración del proyecto, y esas reglas no existen hoy como autoridad versionada dentro de este repositorio.
+Los productos, precios y stocks 2026 son **fixtures educativos**, no información comercial vigente.
 
 ## Stack mantenido
-
-La elección sigue la complejidad real del producto:
 
 - Node.js 24;
 - pnpm 11.26.0;
 - React 19.3.0;
 - React Router 7.18.3;
 - Vite 8.2.2;
-- TypeScript 6.0.3;
+- TypeScript 6.0.3 estricto;
+- Sass 1.104.1;
 - ESLint 10.10.0 + typescript-eslint 8.70.0;
 - Vitest 5 + Testing Library;
-- CSS propio responsive.
+- Docker multi-stage;
+- Nginx no-root para el artifact estático.
 
-React se mantiene porque acá sí existen routing, estado compartido, datos asíncronos y checkout. TypeScript 7 no se adoptó en esta fase porque la versión actual de `typescript-eslint` usada por el repositorio declara soporte oficial por debajo de TypeScript 6.1; se prioriza un contrato completo soportado antes que subir majors por apariencia.
+TypeScript 7 no se adoptó porque se priorizó mantener el compilador dentro de la ventana oficialmente soportada por el toolchain de lint usado en esta fase.
 
-No se agregaron Redux/Zustand, Next.js, backend, autenticación, pasarela de pagos, email, Docker, analytics ni IA porque no existe una necesidad de producto que los justifique.
+Sass tampoco se usa como una segunda fuente rígida de verdad visual: las **CSS custom properties semánticas** (`--store-*`) son la autoridad runtime de color/surface/text/action; Sass organiza composición, mixins, responsive y capas de estilos.
+
+## Docker y runtime reproducible
+
+[`modern/Dockerfile`](./modern/Dockerfile) usa un builder Node 24 y un runtime Nginx separado. El runtime:
+
+- ejecuta como usuario `nginx`;
+- escucha en `8080`;
+- expone `/healthz`;
+- soporta rutas profundas de la SPA;
+- sirve assets versionados con cache immutable;
+- agrega CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y `Permissions-Policy`.
+
+[`modern/compose.yaml`](./modern/compose.yaml) agrega:
+
+- filesystem read-only;
+- `/tmp` como `tmpfs`;
+- `cap_drop: ALL`;
+- `no-new-privileges`.
+
+No hay secretos dentro de la imagen ni dependencia del Firebase histórico.
+
+## Seguridad y datos
+
+La versión 2026 es un **ecommerce educativo/demo local**, no una plataforma de pagos u órdenes comerciales.
+
+El checkout usa un `OrderRepository` local. Los datos del formulario no se envían al Firebase histórico ni a otro servicio remoto. La configuración Firebase del proyecto 2023 se conserva sólo como historia; como las reglas de Firestore no están versionadas en este repositorio, no se presenta ese backend antiguo como autoridad segura actual.
+
+La política pnpm mantiene `strictDepBuilds`. El addon nativo opcional `@parcel/watcher`, introducido por el ecosistema Sass para file watching, tiene su lifecycle build **denegado explícitamente** porque CI y producción sólo compilan y no necesitan ese watcher nativo. Cualquier script de build de dependencia nuevo debe ser revisado antes de permitirse.
 
 ## Calidad reproducible
 
-La primera fundación 2026 fue calificada con:
+La calificación de storefront 2026 (`35032744901`) pasó con:
 
-- install congelado bajo política pnpm de antigüedad mínima de paquetes;
+- install congelado y supply-chain policy;
 - Prettier;
 - ESLint;
 - TypeScript estricto con `skipLibCheck: false`;
-- **6 archivos de test / 17 tests / 17 passed**;
+- **6 archivos de test / 20 tests / 20 passed**;
 - build Vite de producción;
-- artifact moderno muy por debajo de 2 MiB y sin ZIP/GIF históricos pesados.
+- JavaScript: `281.20 kB` / `88.81 kB gzip`;
+- CSS compilado desde Sass: `11.48 kB` / `3.30 kB gzip`;
+- Docker build multi-stage;
+- contenedor no-root + read-only + sin capabilities;
+- healthcheck y rutas profundas;
+- security headers;
+- Chrome 152 con búsqueda/ordenamiento y responsive 360/768/1440;
+- cero recursos remotos durante el browser smoke.
 
-El build moderno observado en la primera calificación fue aproximadamente:
+El workflow permanente [`Modern Pint.ar quality`](./.github/workflows/modern-quality.yml) valida frontend y, después de quedar verde, construye y ejecuta también el contrato del contenedor endurecido.
 
-- JavaScript: `279.86 kB` / `88.38 kB gzip`;
-- CSS: `9.07 kB` / `2.71 kB gzip`.
+Por contraste, el CRA histórico reproducido en 2026 generó un `build/` de aproximadamente **55 MB**, principalmente por media histórica pesada que sigue preservada en Git pero ya no forma parte del delivery mantenido.
 
-Por contraste, la entrega CRA histórica reproducida en 2026 generó un `build/` de aproximadamente **55 MB**, impulsado sobre todo por media original que permanece preservada en Git pero ya no se arrastra al delivery actual.
-
-El workflow permanente [`Modern Pint.ar quality`](./.github/workflows/modern-quality.yml) usa permisos `contents: read`, acciones fijadas por SHA, `pnpm install --frozen-lockfile`, `pnpm check` y un presupuesto explícito del artifact.
-
-## Ejecutar la versión mantenida
+## Ejecutar nativamente
 
 ```bash
 nvm use
@@ -103,16 +126,28 @@ pnpm check
 pnpm dev
 ```
 
-La autoridad de runtime está en [`.nvmrc`](./.nvmrc) y la de dependencias en [`modern/pnpm-lock.yaml`](./modern/pnpm-lock.yaml).
+## Ejecutar con Docker
 
-## Documentación de la modernización
+```bash
+cd modern
+docker compose up --build
+```
+
+Luego:
+
+- storefront: `http://localhost:8080`
+- health: `http://localhost:8080/healthz`
+
+## Documentación
 
 - [Inventario histórico y baseline 2023](./docs/historical-inventory-2026.md)
 - [Arquitectura y decisiones 2026](./docs/modernization-2026.md)
-- [Issue de modernización 2026](https://github.com/Enzopinotti/Pint.ar_Ecommerce/issues/1)
+- [Maduración storefront, Sass y Docker](./docs/storefront-maturity-2026.md)
+- [Issue de modernización general](https://github.com/Enzopinotti/Pint.ar_Ecommerce/issues/1)
+- [Issue de maduración storefront](https://github.com/Enzopinotti/Pint.ar_Ecommerce/issues/3)
 
-## Qué sigue
+## Todavía pendiente antes del cierre total
 
-La fundación moderna todavía no implica por sí sola un cutover público. Antes de declarar completa la modernización hay que calificar el flujo real en navegador, el responsive 360/768/1440, la navegación de rutas profundas, el artifact de producción y el host público seleccionado; después se documentará rollback y se sincronizará nuevamente el roadmap central.
+La maduración local/container ya está calificada, pero la modernización completa requiere un **cutover público 2026** con una única autoridad de deployment, smoke contra el origen real y documentación de rollback. Hasta entonces el deploy histórico no se confunde con la autoridad moderna.
 
-La regla de este repositorio sigue siendo simple: **preservar 2023 como evidencia y mejorar 2026 sin inventar capacidades que el producto no tiene**.
+La regla del repositorio sigue siendo: **preservar 2023 como evidencia y mejorar 2026 sin inventar capacidades que el producto no tiene**.
