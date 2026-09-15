@@ -212,3 +212,5 @@ jobs:
       - name: Stop container
         if: always()
         run: docker stop pintar-storefront-smoke >/dev/null 2>&1 || true
+
+# qualification retrigger for formatted storefront head
