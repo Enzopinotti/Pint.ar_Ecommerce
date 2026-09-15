@@ -1,0 +1,103 @@
+name: P2 baseline audit once
+
+on:
+  push:
+    branches:
+      - ops/p2-baseline-audit-2026
+    paths:
+      - ".github/workflows/p2-baseline-audit-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  historical-build:
+    name: Historical build / Node ${{ matrix.node }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20, 22, 24]
+
+    steps:
+      - name: Check out exact 2023 baseline branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Node.js ${{ matrix.node }}
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Report runtime
+        run: |
+          node --version
+          npm --version
+
+      - name: Frozen historical install
+        run: npm ci
+
+      - name: Historical production build
+        env:
+          CI: "true"
+        run: npm run build
+
+      - name: Report build footprint
+        run: |
+          du -sh build
+          find build/static -type f -printf '%s %p\n' 2>/dev/null | sort -nr | head -n 15 || true
+
+      - name: Record dependency audit summary without gating baseline
+        shell: bash
+        run: |
+          set +e
+          npm audit --json > /tmp/audit.json
+          audit_exit=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('/tmp/audit.json', 'utf8'));
+          console.log(JSON.stringify({
+            vulnerabilities: report.metadata?.vulnerabilities ?? null,
+            dependencies: report.metadata?.dependencies ?? null
+          }, null, 2));
+          NODE
+          echo "npm audit exit code: $audit_exit (informational for historical baseline)"
+
+  historical-deployment:
+    name: Historical Vercel probe
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      DEPLOY_URL: https://pre-entrega2-pinotti-enzopinotti.vercel.app
+
+    steps:
+      - name: Probe documented root and deep route
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in / /carrito /sobreNosotros; do
+            code="$(curl -L -sS -o "/tmp$(echo "$path" | tr '/' '_').html" -w '%{http_code}' "${DEPLOY_URL}${path}" || true)"
+            echo "$path -> HTTP $code"
+          done
+          root_code="$(curl -L -sS -o /tmp/root.html -w '%{http_code}' "${DEPLOY_URL}/" || true)"
+          echo "root title: $(grep -oE '<title>[^<]*</title>' /tmp/root.html | head -n 1 || true)"
+          echo "root bytes: $(wc -c < /tmp/root.html | tr -d ' ')"
+          echo "root HTTP: $root_code"
+
+      - name: Browser-render documented deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          if [ -z "$chrome" ]; then
+            echo "Chrome unavailable on runner"
+            exit 0
+          fi
+          "$chrome" --version
+          timeout 45s "$chrome" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=10000 --dump-dom "${DEPLOY_URL}/" > /tmp/rendered.html 2>/tmp/chrome.err || true
+          echo "rendered bytes: $(wc -c < /tmp/rendered.html | tr -d ' ')"
+          grep -oE '<title>[^<]*</title>' /tmp/rendered.html | head -n 1 || true
+          grep -Eo 'Pint\.Ar|Mi Carrito|Sobre Nosotros|No hay productos|Error 404' /tmp/rendered.html | sort -u || true
+          if [ -s /tmp/chrome.err ]; then tail -n 30 /tmp/chrome.err; fi
