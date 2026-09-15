@@ -8,21 +8,22 @@ import {
   sortProducts,
 } from "./product";
 
+const firstProduct = demoProducts[0];
+if (!firstProduct) {
+  throw new Error("El catálogo demo necesita al menos un producto para los tests.");
+}
+
 describe("product domain", () => {
   it("parses a valid product and rejects invalid stock/category", () => {
-    expect(parseProduct(demoProducts[0])).toEqual(demoProducts[0]);
-    expect(() => parseProduct({ ...demoProducts[0], stock: 1.5 })).toThrow(
-      /stock/,
-    );
+    expect(parseProduct(firstProduct)).toEqual(firstProduct);
+    expect(() => parseProduct({ ...firstProduct, stock: 1.5 })).toThrow(/stock/);
     expect(() =>
-      parseProduct({ ...demoProducts[0], primaryCategory: "Otro" }),
+      parseProduct({ ...firstProduct, primaryCategory: "Otro" }),
     ).toThrow(/primaryCategory/);
   });
 
   it("rejects duplicate ids in a catalogue", () => {
-    expect(() => parseCatalog([demoProducts[0], demoProducts[0]])).toThrow(
-      /duplicado/,
-    );
+    expect(() => parseCatalog([firstProduct, firstProduct])).toThrow(/duplicado/);
   });
 
   it("filters accents, text and categories deterministically", () => {
@@ -40,7 +41,7 @@ describe("product domain", () => {
   it("can hide products without demo stock without mutating the catalogue", () => {
     const catalogue = [
       ...demoProducts,
-      { ...demoProducts[0], id: "sin-stock", stock: 0 },
+      { ...firstProduct, id: "sin-stock", stock: 0 },
     ];
     const original = structuredClone(catalogue);
 
