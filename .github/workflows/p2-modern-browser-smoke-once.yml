@@ -1,0 +1,230 @@
+name: P2 modern browser smoke once
+
+on:
+  push:
+    branches:
+      - ops/p2-modern-browser-qualification
+    paths:
+      - ".github/workflows/p2-modern-browser-smoke-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.26.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: modern/pnpm-lock.yaml
+
+      - name: Build maintained artifact
+        working-directory: modern
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm check
+
+      - name: Launch production preview
+        working-directory: modern
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort >/tmp/vite-preview.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/vite-preview.log
+          exit 1
+
+      - name: Verify SPA deep-route fallback on built artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in / /carrito /sobreNosotros /Item/latex-interior-blanco; do
+            code="$(curl -sS -o /tmp/route.html -w '%{http_code}' "http://127.0.0.1:4173${path}")"
+            echo "$path -> HTTP $code"
+            test "$code" = "200"
+            grep -Fq '<title>Pint.ar — Ecommerce educativo 2026</title>' /tmp/route.html
+          done
+
+      - name: Launch Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$chrome"
+          "$chrome" --version
+          "$chrome" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --remote-debugging-port=9222 \
+            --remote-allow-origins='*' \
+            --user-data-dir=/tmp/pintar-modern-chrome \
+            http://127.0.0.1:4173/ \
+            >/tmp/chrome.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:9222/json/version >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/chrome.log
+          exit 1
+
+      - name: Verify catalogue, cart, checkout and responsive contracts in Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/pintar-smoke.mjs <<'NODE'
+          import assert from "node:assert/strict";
+
+          const ORIGIN = "http://127.0.0.1:4173";
+          const targets = await (await fetch("http://127.0.0.1:9222/json/list")).json();
+          const target = targets.find((candidate) => candidate.type === "page" && candidate.url.startsWith(ORIGIN));
+          assert.ok(target, "preview page target missing");
+
+          const socket = new WebSocket(target.webSocketDebuggerUrl);
+          await new Promise((resolve, reject) => {
+            socket.addEventListener("open", resolve, { once: true });
+            socket.addEventListener("error", reject, { once: true });
+          });
+
+          let nextId = 0;
+          const pending = new Map();
+          socket.addEventListener("message", (event) => {
+            const message = JSON.parse(event.data);
+            if (!message.id) return;
+            const waiter = pending.get(message.id);
+            if (!waiter) return;
+            pending.delete(message.id);
+            if (message.error) waiter.reject(new Error(JSON.stringify(message.error)));
+            else waiter.resolve(message.result);
+          });
+
+          function command(method, params = {}) {
+            return new Promise((resolve, reject) => {
+              const id = ++nextId;
+              pending.set(id, { resolve, reject });
+              socket.send(JSON.stringify({ id, method, params }));
+            });
+          }
+
+          async function evaluate(expression) {
+            const response = await command("Runtime.evaluate", {
+              expression,
+              returnByValue: true,
+              awaitPromise: true,
+            });
+            if (response.exceptionDetails) {
+              throw new Error(response.exceptionDetails.exception?.description ?? response.exceptionDetails.text);
+            }
+            return response.result.value;
+          }
+
+          async function waitFor(expression, label, attempts = 80) {
+            for (let attempt = 0; attempt < attempts; attempt += 1) {
+              if (await evaluate(expression)) return;
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            throw new Error(`Timed out waiting for ${label}`);
+          }
+
+          async function assertNoOverflow(width, label) {
+            await command("Emulation.setDeviceMetricsOverride", {
+              width,
+              height: 900,
+              deviceScaleFactor: 1,
+              mobile: false,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            const layout = await evaluate(`({
+              viewport: window.innerWidth,
+              html: document.documentElement.scrollWidth,
+              body: document.body.scrollWidth,
+            })`);
+            assert.ok(
+              layout.html <= layout.viewport && layout.body <= layout.viewport,
+              `${label} overflow at ${width}px: ${JSON.stringify(layout)}`,
+            );
+          }
+
+          await command("Runtime.enable");
+          await waitFor(
+            `document.readyState === 'complete' && document.body.innerText.includes('Látex interior blanco')`,
+            "catalogue mount",
+          );
+
+          assert.equal(await evaluate(`document.title`), "Pint.ar — Ecommerce educativo 2026");
+          assert.equal(await evaluate(`document.body.innerText.includes('Modo demo local')`), true);
+          assert.equal(await evaluate(`document.body.innerText.includes('pago real')`), true);
+          assert.equal(await evaluate(`document.querySelectorAll('input[type="password"]').length`), 0);
+
+          for (const width of [360, 768, 1440]) {
+            await assertNoOverflow(width, "catalogue");
+          }
+
+          await evaluate(`document.querySelector('a[href="/Item/latex-interior-blanco"]').click()`);
+          await waitFor(`document.querySelector('h1')?.textContent === 'Látex interior blanco'`, "product detail");
+          await assertNoOverflow(360, "product detail");
+          await evaluate(`Array.from(document.querySelectorAll('button')).find((button) => button.textContent.includes('Agregar al carrito')).click()`);
+          await waitFor(`document.querySelector('.cart-count')?.textContent === '1'`, "cart increment");
+
+          await evaluate(`document.querySelector('a[href="/carrito"]').click()`);
+          await waitFor(`document.body.innerText.includes('Tu selección') && document.body.innerText.includes('1 productos')`, "cart page");
+          assert.equal(await evaluate(`document.body.innerText.includes('Látex interior blanco')`), true);
+          await assertNoOverflow(360, "cart");
+
+          await evaluate(`document.querySelector('a[href="/checkout"]').click()`);
+          await waitFor(`document.querySelector('form.checkout-form') !== null`, "checkout page");
+          await assertNoOverflow(360, "checkout");
+
+          await evaluate(`(() => {
+            const set = (selector, value) => {
+              const input = document.querySelector(selector);
+              const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+              setter.call(input, value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            };
+            set('#firstName', 'Ada');
+            set('#lastName', 'Lovelace');
+            set('#phone', '+54 221 555 1212');
+            set('#email', 'ada@example.com');
+            document.querySelector('form.checkout-form').requestSubmit();
+            return true;
+          })()`);
+
+          await waitFor(`document.body.innerText.includes('Gracias, Ada.')`, "demo confirmation");
+          const confirmation = await evaluate(`({
+            text: document.body.innerText,
+            cartCount: document.querySelector('.cart-count')?.textContent,
+          })`);
+          assert.equal(confirmation.cartCount, "0");
+          assert.match(confirmation.text, /DEMO-/);
+          assert.match(confirmation.text, /No se realizó un pago/);
+          assert.match(confirmation.text, /no se enviará un email/i);
+          assert.match(confirmation.text, /no se reservó stock/i);
+          await assertNoOverflow(360, "confirmation");
+
+          const resources = await evaluate(`performance.getEntriesByType('resource').map((entry) => entry.name)`);
+          const remoteResources = resources.filter((url) => !url.startsWith(ORIGIN));
+          assert.deepEqual(remoteResources, [], `unexpected remote resources: ${remoteResources.join(', ')}`);
+          assert.equal(resources.some((url) => /gifSobreNosotros|Bitter\.zip|fondoSobreNosotros/i.test(url)), false);
+
+          console.log("Pint.ar modern browser smoke passed: deep routes, catalogue, detail, cart, checkout truth boundary and 360/768/1440 responsive contracts are valid.");
+          socket.close();
+          NODE
+
+          node /tmp/pintar-smoke.mjs
