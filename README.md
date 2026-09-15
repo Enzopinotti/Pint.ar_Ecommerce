@@ -1,113 +1,118 @@
-# Proyecto E-comerce de pintura
+# Pint.ar — ecommerce educativo · 2023 → 2026
 
-## Descripcion del proyecto
+Pint.ar nació en 2023 como un proyecto de aprendizaje de React realizado en el contexto de Coderhouse y también documentado como parte de un proyecto de Ingeniería Industrial en UTN FRLP.
 
-El proyecto fue realizado en el ámbito de un curso en la plataforma Coderhouse, con el objetivo de crear una aplicación utilizando el framework React. Además, se utiliza como parte de un proyecto de ingeniería industrial en la UTN FRLP (Universidad Tecnológica Nacional, Facultad Regional La Plata). La aplicación se centra en la venta de productos relacionados con la industria de pintura en el ámbito industrial.
+La modernización 2026 **no reescribe esa historia**. Mantiene el proyecto original auditable en Git y agrega una autoridad mantenida separada bajo [`modern/`](./modern/).
 
-La marca se enfoca en ofrecer productos de alta calidad para satisfacer las necesidades de los clientes del sector industrial. El objetivo de la aplicación es brindar una experiencia de compra en línea fluida y segura, donde los usuarios puedan explorar una amplia gama de productos y realizar pedidos.
+## Estado del repositorio
 
-## Tecnologías Utilizadas
+| Etapa | Autoridad | Propósito |
+| --- | --- | --- |
+| 2023 | commit [`3224d89c0c512b3509cea25f1c49a119d371e338`](https://github.com/Enzopinotti/Pint.ar_Ecommerce/tree/3224d89c0c512b3509cea25f1c49a119d371e338) | entrega histórica React + CRA + Firebase/Firestore |
+| 2026 | [`modern/`](./modern/) | reconstrucción mantenida, testeable y explícitamente educativa |
 
-El proyecto se desarrolló utilizando las siguientes tecnologías:
+El deploy de Vercel documentado por la entrega original sigue siendo **evidencia histórica** mientras se califica un cutover separado para la versión 2026:
 
-- **React:** Framework utilizado para la construcción de la aplicación.
-- **Animate.css:** Biblioteca utilizada para crear animaciones, en este caso, se empleó para generar una animación de carga de productos más amena.
-- **Firebase:** Servicio de base de datos utilizado para almacenar los productos y las ventas realizadas en la aplicación.
-- **React Loading Skeleton:** Componente utilizado para mostrar una animación de carga mientras se cargan los detalles del producto.
-- **React Router Dom:** Biblioteca utilizada para el enrutamiento dentro de la aplicación web.
-- **React Toastify:** Componente utilizado para mostrar anuncios y notificaciones, en este caso, se utilizó en el detalle del producto para mostrar mensajes de carga.
+`https://pre-entrega2-pinotti-enzopinotti.vercel.app/`
 
-## Información de la aplicación
+No se presenta esa URL como autoridad de la reconstrucción moderna hasta completar la calificación pública.
 
-### Rutas de Categorías
+## Qué preserva la versión 2026
 
-En el componente principal Main, se utilizan rutas para categorías primarias y secundarias, lo que permite filtrar los productos según las categorías seleccionadas. Estas rutas te permiten mostrar los productos específicos relacionados con las categorías de pinturas a base de cal y pinturas a base de látex, así como también herramientas relacionadas. Al acceder a estas rutas, la aplicación mostrará los productos correspondientes a cada categoría, brindando a los usuarios una experiencia de navegación enfocada en sus necesidades.
+La reconstrucción conserva las capacidades que hacían interesante al ejercicio original:
 
-### Ruta de Detalle de Ítem
+- catálogo y categorías;
+- detalle de producto;
+- rutas React;
+- carrito compartido;
+- cantidades, stock demostrativo y totales;
+- formulario de checkout;
+- confirmación de orden;
+- página de historia / Sobre Nosotros.
 
-La ruta de detalle de ítem se utiliza para mostrar información detallada sobre un producto en particular. Esta ruta utiliza un parámetro de ID de ítem para identificar el producto específico que se desea visualizar. Al acceder a esta ruta, la aplicación mostrará los detalles completos del producto seleccionado, lo que permite a los usuarios obtener información más específica y tomar decisiones de compra más informadas.
+Pero cambia los contratos que en 2023 eran propios de un ejercicio inicial:
 
-### Ruta del Carrito de Compras
+- el carrito usa líneas inmutables y deriva cantidad/total desde una única fuente de verdad;
+- los productos no se mutan para agregarles cantidad;
+- el checkout valida antes de persistir;
+- un guard sincrónico evita envíos duplicados;
+- el carrito sólo se limpia después de una persistencia exitosa;
+- un error conserva el carrito y deja una acción recuperable;
+- la confirmación ya no promete un email que el repositorio no implementa;
+- no se finge procesamiento de pagos, reserva transaccional de stock ni autenticación;
+- el runtime actual no depende del Firebase histórico mientras sus reglas de Firestore no estén versionadas y calificadas.
 
-La ruta del carrito de compras está asociada con el componente CartContainer, que se encarga de mostrar el contenido del carrito y permitir a los usuarios realizar acciones relacionadas con la compra. Al acceder a esta ruta, la aplicación mostrará el contenido actualizado del carrito de compras, lo que permite a los usuarios revisar y ajustar los productos seleccionados antes de finalizar la compra.
+## Límite de seguridad y datos
 
-### Ruta Sobre Nosotros
+La aplicación 2026 es un **ecommerce educativo/demo local**, no una plataforma de pagos u órdenes comerciales.
 
-La ruta "Sobre Nosotros" está vinculada a la página de inicio o landing page de tu aplicación. Al acceder a esta ruta, la aplicación mostrará información relevante sobre tu marca o negocio, brindando a los usuarios una visión general de tu empresa y sus valores.
+El catálogo actual usa fixtures determinísticos versionados en el repositorio. Los precios y stocks son valores demostrativos y no se presentan como precios comerciales vigentes ni como una reproducción exacta de los documentos históricos de Firestore.
 
-### Ruta de Error 404
+El checkout usa un `OrderRepository` local que devuelve IDs `DEMO-*`. Los datos ingresados en el formulario no se envían al Firebase histórico ni a otro servicio remoto.
 
-La ruta de error 404 se utiliza para manejar cualquier solicitud de ruta que no se encuentre definida en la aplicación. Al acceder a una ruta inexistente, la aplicación redireccionará automáticamente a esta ruta de error 404, mostrando un mensaje amigable que indica que la página solicitada no se pudo encontrar.
+La configuración web de Firebase que existe en la entrega 2023 se conserva como parte de la historia. Configuración de cliente y autorización son conceptos distintos: la seguridad real de Firestore depende de reglas/configuración del proyecto, y esas reglas no existen hoy como autoridad versionada dentro de este repositorio.
 
-### Simulación de Espera de Petición de Productos
+## Stack mantenido
 
-En este proyecto, se utilizó la función setTimeout para simular una espera de una petición de productos a una base de datos. La función setTimeout es una función de JavaScript que permite retrasar la ejecución de un bloque de código durante un cierto período de tiempo.
-En el contexto de la aplicación, se utilizó setTimeout para simular una petición de productos a una base de datos externa. Esto se hizo a fin de mostrar una animación o mensaje de carga mientras los productos estaban siendo recuperados. El uso de setTimeout permitió imitar una situación realista en la que se espera una respuesta del servidor, brindando así una mejor experiencia de usuario.
+La elección sigue la complejidad real del producto:
 
-### Funciones que interactúan con la base de datos
+- Node.js 24;
+- pnpm 11.26.0;
+- React 19.3.0;
+- React Router 7.18.3;
+- Vite 8.2.2;
+- TypeScript 6.0.3;
+- ESLint 10.10.0 + typescript-eslint 8.70.0;
+- Vitest 5 + Testing Library;
+- CSS propio responsive.
 
--La función getProduct se encarga de obtener los productos desde la colección "productos" en la base de datos. Utiliza la función get de Firebase Firestore para realizar esta tarea. La función get devuelve una promesa que representa la respuesta de la base de datos.
--La función getProductsByCategory se encarga de obtener los productos de una categoría específica en base a un filtro. Toma dos parámetros: categoria y secundaria.
-El parámetro categoria representa la categoría principal a la cual pertenecen los productos que se desean filtrar.
-El parámetro secundaria es un valor booleano que indica si se debe aplicar el filtro a la categoría secundaria en lugar de la categoría principal.
-Dentro de la función, se crea una variable filtro que almacenará el filtro de consulta. Luego, se accede a la colección "productos" utilizando la función collection de Firebase Firestore.
+React se mantiene porque acá sí existen routing, estado compartido, datos asíncronos y checkout. TypeScript 7 no se adoptó en esta fase porque la versión actual de `typescript-eslint` usada por el repositorio declara soporte oficial por debajo de TypeScript 6.1; se prioriza un contrato completo soportado antes que subir majors por apariencia.
 
-### Funciones del Carrito
+No se agregaron Redux/Zustand, Next.js, backend, autenticación, pasarela de pagos, email, Docker, analytics ni IA porque no existe una necesidad de producto que los justifique.
 
-Dentro del contexto personalizado (CustomProvider), se encuentran varias funciones que interactúan con el carrito de compras. Estas funciones permiten agregar, eliminar y limpiar los elementos del carrito. A continuación, se detallan cada una de ellas:
+## Calidad reproducible
 
-    1. Función agregarAlCarrito(cantidad, producto)
-La función agregarAlCarrito se encarga de agregar un producto al carrito de compras. Recibe dos parámetros: cantidad, que representa la cantidad de productos que se desean agregar, y producto, que es el producto específico que se va a incluir en el carrito.
+La primera fundación 2026 fue calificada con:
 
-    2. Función eliminarDelCarrito(cantidad, producto)
-La función eliminarDelCarrito se utiliza para eliminar un producto del carrito de compras. Toma dos parámetros: cantidad, que indica la cantidad de productos que se desea eliminar, y producto, que es el producto específico que se va a quitar del carrito.
-    3. Función limpiarCarrito()
-La función limpiarCarrito se encarga de vaciar completamente el carrito de compras. No recibe ningún parámetro.
+- install congelado bajo política pnpm de antigüedad mínima de paquetes;
+- Prettier;
+- ESLint;
+- TypeScript estricto con `skipLibCheck: false`;
+- **6 archivos de test / 17 tests / 17 passed**;
+- build Vite de producción;
+- artifact moderno muy por debajo de 2 MiB y sin ZIP/GIF históricos pesados.
 
-    4. Objeto: valor del Contexto
-El objeto valor del contexto personalizado contiene los campos y variables que se desean compartir en toda la aplicación. Este objeto puede incluir las funciones y datos relevantes, como el estado del carrito, el usuario actual, las configuraciones globales, entre otros. Al tener acceso a este objeto desde cualquier componente que consuma el contexto, se facilita el acceso a los datos y acciones comunes en la aplicación.
+El build moderno observado en la primera calificación fue aproximadamente:
 
-### currencyFormatter
+- JavaScript: `279.86 kB` / `88.38 kB gzip`;
+- CSS: `9.07 kB` / `2.71 kB gzip`.
 
-La función currencyFormatter se utiliza para formatear un valor numérico con una determinada moneda. Recibe dos parámetros: currency y value.
-El parámetro currency representa la abreviatura de la moneda que se desea utilizar para formatear el valor, por ejemplo, "USD" para Dólares estadounidenses o "EUR" para Euros.
-El parámetro value es el valor numérico que se desea formatear.
+Por contraste, la entrega CRA histórica reproducida en 2026 generó un `build/` de aproximadamente **55 MB**, impulsado sobre todo por media original que permanece preservada en Git pero ya no se arrastra al delivery actual.
 
-## Instalación y Uso
+El workflow permanente [`Modern Pint.ar quality`](./.github/workflows/modern-quality.yml) usa permisos `contents: read`, acciones fijadas por SHA, `pnpm install --frozen-lockfile`, `pnpm check` y un presupuesto explícito del artifact.
 
-A continuación, se detallan los pasos para instalar y utilizar el proyecto:
+## Ejecutar la versión mantenida
 
-1.Accede al repositorio del proyecto en GitHub: [https://github.com/Enzopinotti/PreEntrega2-Pinotti]
-2.Clona el repositorio en tu entorno local utilizando Git:
-    `git clone https://github.com/Enzopinotti/PreEntrega2-Pinotti.git`
-3.Accede al directorio del proyecto:
-    `cd PreEntrega2-Pinotti`
-4.Instala las dependencias del proyecto utilizando NPM:
-    `npm install Animate.css`
-    `npm install Firebase`
-    etc...
-5.Inicia la aplicación en tu entorno de desarrollo local:
-    `npm start`
-6.Abre tu navegador web y accede a [http://localhost:3000] para ver la aplicación en funcionamiento.
+```bash
+nvm use
+cd modern
+corepack enable
+corepack prepare pnpm@11.26.0 --activate
+pnpm install --frozen-lockfile
+pnpm check
+pnpm dev
+```
 
-**Recuerda que es necesario tener Node.js y NPM instalados en tu sistema antes de iniciar la instalación.**
+La autoridad de runtime está en [`.nvmrc`](./.nvmrc) y la de dependencias en [`modern/pnpm-lock.yaml`](./modern/pnpm-lock.yaml).
 
-¡Listo! Ahora deberías tener la aplicación funcionando en tu entorno local y estar listo para comenzar a explorar y utilizarla.
+## Documentación de la modernización
 
-## Demostración y Deploy
+- [Inventario histórico y baseline 2023](./docs/historical-inventory-2026.md)
+- [Arquitectura y decisiones 2026](./docs/modernization-2026.md)
+- [Issue de modernización 2026](https://github.com/Enzopinotti/Pint.ar_Ecommerce/issues/1)
 
--Demostración en Línea: Puedes acceder a una demostración en línea de la aplicación en el siguiente enlace: [https://pre-entrega2-pinotti-enzopinotti.vercel.app/]
+## Qué sigue
 
-GIF
+La fundación moderna todavía no implica por sí sola un cutover público. Antes de declarar completa la modernización hay que calificar el flujo real en navegador, el responsive 360/768/1440, la navegación de rutas profundas, el artifact de producción y el host público seleccionado; después se documentará rollback y se sincronizará nuevamente el roadmap central.
 
-## Contacto
-
-Si tienes alguna pregunta, sugerencia o simplemente deseas ponerte en contacto, puedes hacerlo a través de los siguientes canales:
-
--**LinkedIn:** Enzo Pinotti [https://www.linkedin.com/in/enzo-daniel-pinotti-667270179/]
--**Correo Electrónico:** [enzopinottii@gmail.com]
--**Instagram:** enzoopinotti.uwu [https://www.instagram.com/enzoopinotti.uwu/?hl=es]
-
-No dudes en contactarme si necesitas más información sobre el proyecto, tienes alguna consulta o simplemente deseas establecer una conexión profesional.
-
-¡Espero que esta información sea útil! Si tienes alguna otra pregunta o necesitas ayuda adicional, estaré encantado de ayudarte
+La regla de este repositorio sigue siendo simple: **preservar 2023 como evidencia y mejorar 2026 sin inventar capacidades que el producto no tiene**.
