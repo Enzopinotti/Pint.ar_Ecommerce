@@ -10,8 +10,7 @@ export interface CustomerInput {
 export type CustomerErrors = Partial<Record<keyof CustomerInput, string>>;
 
 export type CustomerValidation =
-  | { ok: true; value: CustomerInput }
-  | { ok: false; errors: CustomerErrors };
+  { ok: true; value: CustomerInput } | { ok: false; errors: CustomerErrors };
 
 export function validateCustomer(input: CustomerInput): CustomerValidation {
   const value: CustomerInput = {
@@ -21,11 +20,17 @@ export function validateCustomer(input: CustomerInput): CustomerValidation {
     email: input.email.trim().toLocaleLowerCase("es-AR"),
   };
   const errors: CustomerErrors = {};
-  if (value.firstName.length < 2) errors.firstName = "Ingresá al menos 2 caracteres.";
-  if (value.lastName.length < 2) errors.lastName = "Ingresá al menos 2 caracteres.";
-  if (!/^[0-9+()\-\s]{6,20}$/.test(value.phone)) errors.phone = "Ingresá un teléfono válido.";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email)) errors.email = "Ingresá un correo válido.";
-  return Object.keys(errors).length > 0 ? { ok: false, errors } : { ok: true, value };
+  if (value.firstName.length < 2)
+    errors.firstName = "Ingresá al menos 2 caracteres.";
+  if (value.lastName.length < 2)
+    errors.lastName = "Ingresá al menos 2 caracteres.";
+  if (!/^[0-9+()\-\s]{6,20}$/.test(value.phone))
+    errors.phone = "Ingresá un teléfono válido.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email))
+    errors.email = "Ingresá un correo válido.";
+  return Object.keys(errors).length > 0
+    ? { ok: false, errors }
+    : { ok: true, value };
 }
 
 export interface OrderLine {
@@ -44,8 +49,13 @@ export interface OrderDraft {
   createdAt: string;
 }
 
-export function buildOrderDraft(customer: CustomerInput, cart: CartState, now = new Date()): OrderDraft {
-  if (cart.lines.length === 0) throw new Error("No se puede crear una orden con el carrito vacío.");
+export function buildOrderDraft(
+  customer: CustomerInput,
+  cart: CartState,
+  now = new Date(),
+): OrderDraft {
+  if (cart.lines.length === 0)
+    throw new Error("No se puede crear una orden con el carrito vacío.");
   const summary = deriveCartSummary(cart);
   return {
     customer,

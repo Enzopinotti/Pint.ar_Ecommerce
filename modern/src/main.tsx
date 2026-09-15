@@ -13,7 +13,9 @@ createRoot(root).render(
   <StrictMode>
     <BrowserRouter>
       <OrderRepositoryProvider>
-        <CartProvider><AppRoutes /></CartProvider>
+        <CartProvider>
+          <AppRoutes />
+        </CartProvider>
       </OrderRepositoryProvider>
     </BrowserRouter>
   </StrictMode>,

@@ -26,15 +26,24 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "add": {
       if (!validQuantity(action.quantity, action.product.stock)) return state;
-      const current = state.lines.find((line) => line.product.id === action.product.id);
+      const current = state.lines.find(
+        (line) => line.product.id === action.product.id,
+      );
       if (!current) {
-        return { lines: [...state.lines, { product: { ...action.product }, quantity: action.quantity }] };
+        return {
+          lines: [
+            ...state.lines,
+            { product: { ...action.product }, quantity: action.quantity },
+          ],
+        };
       }
       const nextQuantity = current.quantity + action.quantity;
       if (!validQuantity(nextQuantity, current.product.stock)) return state;
       return {
         lines: state.lines.map((line) =>
-          line.product.id === action.product.id ? { ...line, quantity: nextQuantity } : line,
+          line.product.id === action.product.id
+            ? { ...line, quantity: nextQuantity }
+            : line,
         ),
       };
     }
@@ -47,7 +56,11 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
         }),
       };
     case "remove":
-      return { lines: state.lines.filter((line) => line.product.id !== action.productId) };
+      return {
+        lines: state.lines.filter(
+          (line) => line.product.id !== action.productId,
+        ),
+      };
     case "clear":
       return EMPTY_CART;
     case "replace":

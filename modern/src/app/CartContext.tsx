@@ -1,5 +1,17 @@
-import { createContext, useContext, useEffect, useMemo, useReducer, type PropsWithChildren } from "react";
-import { cartReducer, deriveCartSummary, EMPTY_CART, type CartState } from "../domain/cart";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  type PropsWithChildren,
+} from "react";
+import {
+  cartReducer,
+  deriveCartSummary,
+  EMPTY_CART,
+  type CartState,
+} from "../domain/cart";
 import { loadCartState, saveCartState } from "../domain/cartStorage";
 import type { Product } from "../domain/product";
 
@@ -32,7 +44,8 @@ export function CartProvider({ children }: PropsWithChildren) {
       state,
       summary,
       add: (product, quantity) => dispatch({ type: "add", product, quantity }),
-      setQuantity: (productId, quantity) => dispatch({ type: "setQuantity", productId, quantity }),
+      setQuantity: (productId, quantity) =>
+        dispatch({ type: "setQuantity", productId, quantity }),
       remove: (productId) => dispatch({ type: "remove", productId }),
       clear: () => dispatch({ type: "clear" }),
     }),
@@ -44,6 +57,7 @@ export function CartProvider({ children }: PropsWithChildren) {
 
 export function useCart(): CartContextValue {
   const value = useContext(CartContext);
-  if (!value) throw new Error("useCart debe ejecutarse dentro de CartProvider.");
+  if (!value)
+    throw new Error("useCart debe ejecutarse dentro de CartProvider.");
   return value;
 }

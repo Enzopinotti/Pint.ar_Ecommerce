@@ -6,13 +6,23 @@ import { CartProvider } from "./CartContext";
 import { OrderRepositoryProvider } from "./OrderRepositoryContext";
 
 function renderRoute(route: string) {
-  render(<MemoryRouter initialEntries={[route]}><OrderRepositoryProvider><CartProvider><AppRoutes /></CartProvider></OrderRepositoryProvider></MemoryRouter>);
+  render(
+    <MemoryRouter initialEntries={[route]}>
+      <OrderRepositoryProvider>
+        <CartProvider>
+          <AppRoutes />
+        </CartProvider>
+      </OrderRepositoryProvider>
+    </MemoryRouter>,
+  );
 }
 
 describe("routing and truth boundaries", () => {
   it("renders the deterministic catalogue without a remote backend", async () => {
     renderRoute("/");
-    expect(await screen.findByText("Látex interior blanco")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Látex interior blanco"),
+    ).toBeInTheDocument();
     expect(screen.getByText(/Modo demo local/i)).toBeInTheDocument();
   });
 

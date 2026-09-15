@@ -13,11 +13,17 @@ export function loadCartState(storage: Storage): CartState {
   if (!raw) return EMPTY_CART;
   try {
     const payload = JSON.parse(raw) as Partial<StoredCart>;
-    if (payload.version !== 1 || !Array.isArray(payload.lines)) return EMPTY_CART;
+    if (payload.version !== 1 || !Array.isArray(payload.lines))
+      return EMPTY_CART;
     const lines = payload.lines.map((line) => {
       const product = parseProduct(line.product);
       const quantity = line.quantity;
-      if (typeof quantity !== "number" || !Number.isInteger(quantity) || quantity < 1 || quantity > product.stock) {
+      if (
+        typeof quantity !== "number" ||
+        !Number.isInteger(quantity) ||
+        quantity < 1 ||
+        quantity > product.stock
+      ) {
         throw new TypeError("Cantidad de carrito inválida.");
       }
       return { product, quantity };
@@ -29,5 +35,8 @@ export function loadCartState(storage: Storage): CartState {
 }
 
 export function saveCartState(storage: Storage, state: CartState): void {
-  storage.setItem(CART_STORAGE_KEY, JSON.stringify({ version: 1, lines: state.lines } satisfies StoredCart));
+  storage.setItem(
+    CART_STORAGE_KEY,
+    JSON.stringify({ version: 1, lines: state.lines } satisfies StoredCart),
+  );
 }

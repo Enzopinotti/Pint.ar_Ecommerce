@@ -51,24 +51,32 @@ export function parseProduct(input: unknown): Product {
     price: nonNegativeNumber(raw.price, "price"),
     stock,
     primaryCategory: category,
-    secondaryCategory: requiredString(raw.secondaryCategory, "secondaryCategory"),
+    secondaryCategory: requiredString(
+      raw.secondaryCategory,
+      "secondaryCategory",
+    ),
     accent: requiredString(raw.accent, "accent"),
   };
 }
 
 export function parseCatalog(input: unknown): Product[] {
-  if (!Array.isArray(input)) throw new TypeError("El catálogo debe ser una lista.");
+  if (!Array.isArray(input))
+    throw new TypeError("El catálogo debe ser una lista.");
   const parsed = input.map(parseProduct);
   const ids = new Set<string>();
   for (const product of parsed) {
-    if (ids.has(product.id)) throw new TypeError(`ID de producto duplicado: ${product.id}`);
+    if (ids.has(product.id))
+      throw new TypeError(`ID de producto duplicado: ${product.id}`);
     ids.add(product.id);
   }
   return parsed;
 }
 
 function normalize(value: string): string {
-  return value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("es-AR");
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLocaleLowerCase("es-AR");
 }
 
 export function filterProducts(
@@ -77,9 +85,13 @@ export function filterProducts(
 ): Product[] {
   const query = normalize(options.query?.trim() ?? "");
   return products.filter((product) => {
-    const primaryMatches = !options.primary || product.primaryCategory === options.primary;
-    const secondaryMatches = !options.secondary || product.secondaryCategory === options.secondary;
-    const haystack = normalize(`${product.name} ${product.description} ${product.primaryCategory} ${product.secondaryCategory}`);
+    const primaryMatches =
+      !options.primary || product.primaryCategory === options.primary;
+    const secondaryMatches =
+      !options.secondary || product.secondaryCategory === options.secondary;
+    const haystack = normalize(
+      `${product.name} ${product.description} ${product.primaryCategory} ${product.secondaryCategory}`,
+    );
     const queryMatches = query.length === 0 || haystack.includes(query);
     return primaryMatches && secondaryMatches && queryMatches;
   });

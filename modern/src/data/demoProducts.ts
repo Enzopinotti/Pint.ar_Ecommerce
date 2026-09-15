@@ -4,7 +4,8 @@ export const demoProducts = parseCatalog([
   {
     id: "latex-interior-blanco",
     name: "Látex interior blanco",
-    description: "Fixture demostrativo inspirado en la categoría histórica de pinturas látex.",
+    description:
+      "Fixture demostrativo inspirado en la categoría histórica de pinturas látex.",
     price: 12400,
     stock: 12,
     primaryCategory: "Pintura",
@@ -14,7 +15,8 @@ export const demoProducts = parseCatalog([
   {
     id: "latex-interior-color",
     name: "Látex interior color",
-    description: "Producto de demostración para probar variantes de catálogo y carrito.",
+    description:
+      "Producto de demostración para probar variantes de catálogo y carrito.",
     price: 13800,
     stock: 8,
     primaryCategory: "Pintura",
@@ -24,7 +26,8 @@ export const demoProducts = parseCatalog([
   {
     id: "pintura-cal-demo",
     name: "Pintura a la cal",
-    description: "Fixture educativo para conservar la navegación de categorías del proyecto 2023.",
+    description:
+      "Fixture educativo para conservar la navegación de categorías del proyecto 2023.",
     price: 9800,
     stock: 10,
     primaryCategory: "Pintura",
@@ -34,7 +37,8 @@ export const demoProducts = parseCatalog([
   {
     id: "rodillo-lana-22",
     name: "Rodillo de lana 22 cm",
-    description: "Herramienta demo basada en los assets históricos del repositorio.",
+    description:
+      "Herramienta demo basada en los assets históricos del repositorio.",
     price: 6200,
     stock: 16,
     primaryCategory: "Herramienta",
@@ -44,7 +48,8 @@ export const demoProducts = parseCatalog([
   {
     id: "pincel-30",
     name: "Pincel N.º 30",
-    description: "Fixture local para ejercitar detalle, cantidades y validación de stock.",
+    description:
+      "Fixture local para ejercitar detalle, cantidades y validación de stock.",
     price: 3100,
     stock: 20,
     primaryCategory: "Herramienta",
@@ -54,7 +59,8 @@ export const demoProducts = parseCatalog([
   {
     id: "lija-pared-pack",
     name: "Pack de lijas para pared",
-    description: "Producto demostrativo inspirado en el catálogo visual histórico.",
+    description:
+      "Producto demostrativo inspirado en el catálogo visual histórico.",
     price: 8900,
     stock: 6,
     primaryCategory: "Herramienta",

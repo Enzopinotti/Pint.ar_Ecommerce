@@ -11,7 +11,13 @@ import { CheckoutPage } from "./CheckoutPage";
 import { ConfirmationPage } from "./ConfirmationPage";
 
 function seedCart() {
-  sessionStorage.setItem(CART_STORAGE_KEY, JSON.stringify({ version: 1, lines: [{ product: demoProducts[0], quantity: 2 }] }));
+  sessionStorage.setItem(
+    CART_STORAGE_KEY,
+    JSON.stringify({
+      version: 1,
+      lines: [{ product: demoProducts[0], quantity: 2 }],
+    }),
+  );
 }
 
 function renderCheckout(repository: OrderRepository) {
@@ -42,7 +48,12 @@ describe("checkout UI contract", () => {
   it("guards duplicate submits synchronously and clears only after success", async () => {
     seedCart();
     let resolveOrder: ((value: { id: string }) => void) | undefined;
-    const submit = vi.fn(() => new Promise<{ id: string }>((resolve) => { resolveOrder = resolve; }));
+    const submit = vi.fn(
+      () =>
+        new Promise<{ id: string }>((resolve) => {
+          resolveOrder = resolve;
+        }),
+    );
     renderCheckout({ submit });
     const user = await fillValidCustomer();
     const button = screen.getByRole("button", { name: "Confirmar orden demo" });
@@ -61,9 +72,15 @@ describe("checkout UI contract", () => {
     const submit = vi.fn().mockRejectedValue(new Error("offline"));
     renderCheckout({ submit });
     const user = await fillValidCustomer();
-    await user.click(screen.getByRole("button", { name: "Confirmar orden demo" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent(/carrito sigue intacto/i);
+    await user.click(
+      screen.getByRole("button", { name: "Confirmar orden demo" }),
+    );
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      /carrito sigue intacto/i,
+    );
     expect(screen.getByText(/2 unidades/)).toBeInTheDocument();
-    expect(JSON.parse(sessionStorage.getItem(CART_STORAGE_KEY) ?? "{}").lines).toHaveLength(1);
+    expect(
+      JSON.parse(sessionStorage.getItem(CART_STORAGE_KEY) ?? "{}").lines,
+    ).toHaveLength(1);
   });
 });
