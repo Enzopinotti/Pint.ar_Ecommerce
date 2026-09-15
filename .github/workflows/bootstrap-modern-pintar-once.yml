@@ -45,7 +45,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .nvmrc docs modern .github/workflows/modern-quality.yml
+          git add .nvmrc docs modern
           git commit -m "feat: establish Pint.ar 2026 maintained authority"
           git push origin HEAD:modernization/2026-pintar-v1
 
