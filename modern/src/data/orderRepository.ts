@@ -9,7 +9,8 @@ export interface OrderRepository {
 }
 
 export class DemoOrderRepository implements OrderRepository {
-  async submit(_order: OrderDraft): Promise<OrderResult> {
+  async submit(order: OrderDraft): Promise<OrderResult> {
+    void order;
     const suffix =
       globalThis.crypto?.randomUUID?.().slice(0, 8).toUpperCase() ??
       Date.now().toString(36).toUpperCase();
