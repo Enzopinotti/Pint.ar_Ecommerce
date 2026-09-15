@@ -6,6 +6,7 @@ on:
       - feat/2026-storefront-maturity
     paths:
       - ".github/workflows/storefront-maturity-once.yml"
+      - "modern/pnpm-workspace.yaml"
 
 permissions:
   contents: write
@@ -355,6 +356,10 @@ jobs:
           ## Product maturity in this phase
 
           Catalogue selection now combines free-text search, route category filters, an in-stock-only toggle and deterministic sorting. Product data remains explicit demo fixture data; no UI copy should imply current commercial inventory, payment, email or stock reservation.
+
+          ## Dependency build policy
+
+          pnpm 11 keeps `strictDepBuilds` enabled. Sass currently resolves the optional native filesystem watcher `@parcel/watcher`; Pint.ar explicitly denies its lifecycle build because CI and production compile Sass without watch mode. Any future package with an unreviewed build script must fail install until reviewed.
 
           ## Next qualification
 
