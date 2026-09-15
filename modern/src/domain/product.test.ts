@@ -10,20 +10,26 @@ import {
 
 const firstProduct = demoProducts[0];
 if (!firstProduct) {
-  throw new Error("El catálogo demo necesita al menos un producto para los tests.");
+  throw new Error(
+    "El catálogo demo necesita al menos un producto para los tests.",
+  );
 }
 
 describe("product domain", () => {
   it("parses a valid product and rejects invalid stock/category", () => {
     expect(parseProduct(firstProduct)).toEqual(firstProduct);
-    expect(() => parseProduct({ ...firstProduct, stock: 1.5 })).toThrow(/stock/);
+    expect(() => parseProduct({ ...firstProduct, stock: 1.5 })).toThrow(
+      /stock/,
+    );
     expect(() =>
       parseProduct({ ...firstProduct, primaryCategory: "Otro" }),
     ).toThrow(/primaryCategory/);
   });
 
   it("rejects duplicate ids in a catalogue", () => {
-    expect(() => parseCatalog([firstProduct, firstProduct])).toThrow(/duplicado/);
+    expect(() => parseCatalog([firstProduct, firstProduct])).toThrow(
+      /duplicado/,
+    );
   });
 
   it("filters accents, text and categories deterministically", () => {
