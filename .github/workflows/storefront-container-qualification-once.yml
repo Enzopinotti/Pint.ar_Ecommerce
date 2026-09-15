@@ -1,0 +1,214 @@
+name: Qualify Pint.ar storefront container once
+
+on:
+  push:
+    branches:
+      - feat/2026-storefront-maturity
+    paths:
+      - ".github/workflows/storefront-container-qualification-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out qualification head
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: feat/2026-storefront-maturity
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.26.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: modern/pnpm-lock.yaml
+
+      - name: Run full frontend contract
+        working-directory: modern
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm check
+
+      - name: Build hardened production image
+        working-directory: modern
+        run: docker build --pull -t pintar-storefront:qualification .
+
+      - name: Start hardened production container
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run -d --rm --name pintar-storefront-smoke \
+            --read-only \
+            --tmpfs /tmp:size=16m,mode=1777 \
+            --cap-drop ALL \
+            --security-opt no-new-privileges:true \
+            -p 8080:8080 \
+            pintar-storefront:qualification
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/healthz >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          docker logs pintar-storefront-smoke
+          exit 1
+
+      - name: Verify container, deep routes and headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(curl -fsS http://127.0.0.1:8080/healthz)" = "ok"
+          test "$(docker inspect --format '{{.Config.User}}' pintar-storefront-smoke)" = "nginx"
+          for path in / /carrito /checkout /sobreNosotros /Item/latex-interior-blanco /category/Pintura; do
+            code="$(curl -sS -o /tmp/page.html -w '%{http_code}' "http://127.0.0.1:8080${path}")"
+            echo "$path -> HTTP $code"
+            test "$code" = "200"
+            grep -Fq '<title>Pint.ar — Ecommerce educativo 2026</title>' /tmp/page.html
+          done
+          headers="$(curl -sSI http://127.0.0.1:8080/)"
+          grep -qi '^X-Content-Type-Options: nosniff' <<<"$headers"
+          grep -qi '^X-Frame-Options: DENY' <<<"$headers"
+          grep -qi '^Referrer-Policy: strict-origin-when-cross-origin' <<<"$headers"
+          grep -qi '^Permissions-Policy:' <<<"$headers"
+          grep -qi '^Content-Security-Policy:' <<<"$headers"
+
+      - name: Launch Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$chrome"
+          "$chrome" --version
+          "$chrome" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --remote-debugging-port=9222 \
+            --remote-allow-origins='*' \
+            --user-data-dir=/tmp/pintar-storefront-chrome \
+            http://127.0.0.1:8080/ \
+            >/tmp/chrome.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:9222/json/version >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/chrome.log
+          exit 1
+
+      - name: Verify storefront controls and responsive browser contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/storefront-smoke.mjs <<'NODE'
+          import assert from "node:assert/strict";
+
+          const ORIGIN = "http://127.0.0.1:8080";
+          const targets = await (await fetch("http://127.0.0.1:9222/json/list")).json();
+          const target = targets.find((candidate) => candidate.type === "page" && candidate.url.startsWith(ORIGIN));
+          assert.ok(target, "storefront page target missing");
+
+          const socket = new WebSocket(target.webSocketDebuggerUrl);
+          await new Promise((resolve, reject) => {
+            socket.addEventListener("open", resolve, { once: true });
+            socket.addEventListener("error", reject, { once: true });
+          });
+
+          let nextId = 0;
+          const pending = new Map();
+          socket.addEventListener("message", (event) => {
+            const message = JSON.parse(event.data);
+            if (!message.id) return;
+            const waiter = pending.get(message.id);
+            if (!waiter) return;
+            pending.delete(message.id);
+            if (message.error) waiter.reject(new Error(JSON.stringify(message.error)));
+            else waiter.resolve(message.result);
+          });
+
+          function command(method, params = {}) {
+            return new Promise((resolve, reject) => {
+              const id = ++nextId;
+              pending.set(id, { resolve, reject });
+              socket.send(JSON.stringify({ id, method, params }));
+            });
+          }
+
+          async function evaluate(expression) {
+            const response = await command("Runtime.evaluate", {
+              expression,
+              returnByValue: true,
+              awaitPromise: true,
+            });
+            if (response.exceptionDetails) {
+              throw new Error(response.exceptionDetails.exception?.description ?? response.exceptionDetails.text);
+            }
+            return response.result.value;
+          }
+
+          async function waitFor(expression, label, attempts = 80) {
+            for (let attempt = 0; attempt < attempts; attempt += 1) {
+              if (await evaluate(expression)) return;
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            throw new Error(`Timed out waiting for ${label}`);
+          }
+
+          async function noOverflow(width, label) {
+            await command("Emulation.setDeviceMetricsOverride", {
+              width,
+              height: 900,
+              deviceScaleFactor: 1,
+              mobile: false,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            const layout = await evaluate(`({viewport: innerWidth, html: document.documentElement.scrollWidth, body: document.body.scrollWidth})`);
+            assert.ok(layout.html <= layout.viewport && layout.body <= layout.viewport, `${label} overflow ${width}: ${JSON.stringify(layout)}`);
+          }
+
+          await command("Runtime.enable");
+          await waitFor(`document.body.innerText.includes('Látex interior blanco')`, "catalogue mount");
+          assert.equal(await evaluate(`document.querySelectorAll('.product-card').length`), 6);
+          assert.equal(await evaluate(`document.querySelector('select')?.options.length`), 5);
+          assert.equal(await evaluate(`document.querySelector('input[type="checkbox"]') !== null`), true);
+
+          for (const width of [360, 768, 1440]) await noOverflow(width, "catalogue controls");
+
+          await evaluate(`(() => {
+            const select = document.querySelector('select');
+            const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set;
+            setter.call(select, 'price-desc');
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+            return true;
+          })()`);
+          await waitFor(`document.querySelector('.product-card h2')?.textContent === 'Látex interior color'`, "price descending sort");
+
+          await evaluate(`(() => {
+            const input = document.querySelector('input[type="search"]');
+            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+            setter.call(input, 'pincel');
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            return true;
+          })()`);
+          await waitFor(`document.querySelectorAll('.product-card').length === 1 && document.querySelector('.product-card h2')?.textContent === 'Pincel N.º 30'`, "search filter");
+          await noOverflow(360, "filtered catalogue");
+
+          const resources = await evaluate(`performance.getEntriesByType('resource').map((entry) => entry.name)`);
+          const remote = resources.filter((url) => !url.startsWith(ORIGIN));
+          assert.deepEqual(remote, [], `unexpected remote resources: ${remote.join(', ')}`);
+
+          console.log("Pint.ar storefront browser qualification passed: Sass container, sort/search controls and 360/768/1440 layout are valid.");
+          socket.close();
+          NODE
+          node /tmp/storefront-smoke.mjs
+
+      - name: Stop container
+        if: always()
+        run: docker stop pintar-storefront-smoke >/dev/null 2>&1 || true
