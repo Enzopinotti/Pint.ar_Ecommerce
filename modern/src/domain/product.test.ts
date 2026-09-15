@@ -57,7 +57,9 @@ describe("product domain", () => {
     expect(sortProducts(demoProducts, "price-desc")[0]?.price).toBe(
       Math.max(...demoProducts.map((product) => product.price)),
     );
-    expect(sortProducts(demoProducts, "name-asc").map((product) => product.name)).toEqual(
+    expect(
+      sortProducts(demoProducts, "name-asc").map((product) => product.name),
+    ).toEqual(
       [...demoProducts]
         .sort((a, b) =>
           a.name.localeCompare(b.name, "es-AR", { sensitivity: "base" }),
@@ -78,9 +80,9 @@ describe("product domain", () => {
     });
 
     expect(selected.length).toBeGreaterThan(0);
-    expect(selected.every((product) => product.primaryCategory === "Pintura")).toBe(
-      true,
-    );
+    expect(
+      selected.every((product) => product.primaryCategory === "Pintura"),
+    ).toBe(true);
     expect(selected.every((product) => product.stock > 0)).toBe(true);
     expect(selected.map((product) => product.price)).toEqual(
       [...selected.map((product) => product.price)].sort((a, b) => b - a),

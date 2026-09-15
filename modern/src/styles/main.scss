@@ -1,0 +1,9 @@
+/*
+ * The original 2026 CSS is preserved as a migration bridge.
+ * Runtime semantic custom properties below are the visual authority;
+ * Sass owns composition, reuse and responsive structure.
+ */
+@use "./legacy-bridge";
+@use "./tokens";
+@use "./storefront";
+@use "./accessibility";

@@ -65,14 +65,12 @@ export function CatalogPage() {
     <>
       <section className="hero">
         <div>
-          <p className="eyebrow">
-            2023 → 2026 · storefront engineering
-          </p>
+          <p className="eyebrow">2023 → 2026 · storefront engineering</p>
           <h1>Pint.ar, un ecommerce educativo reconstruido con criterio.</h1>
           <p className="hero-copy">
-            Catálogo, filtros, carrito y checkout demo con estado determinístico,
-            sin fingir pagos, emails ni seguridad backend que este proyecto no
-            tiene.
+            Catálogo, filtros, carrito y checkout demo con estado
+            determinístico, sin fingir pagos, emails ni seguridad backend que
+            este proyecto no tiene.
           </p>
         </div>
         <aside className="trust-card" aria-label="Límite del demo">

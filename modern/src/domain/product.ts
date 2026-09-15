@@ -1,10 +1,6 @@
 export type ProductCategory = "Pintura" | "Herramienta";
 export type ProductSortMode =
-  | "featured"
-  | "price-asc"
-  | "price-desc"
-  | "name-asc"
-  | "stock-desc";
+  "featured" | "price-asc" | "price-desc" | "name-asc" | "stock-desc";
 
 export interface Product {
   id: string;
