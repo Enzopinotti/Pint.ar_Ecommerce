@@ -1,0 +1,60 @@
+name: Refresh modern Pint.ar lock once
+
+on:
+  push:
+    branches:
+      - modernization/2026-pintar-v1
+    paths:
+      - ".github/workflows/refresh-modern-lock-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-and-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Check out modernization branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: modernization/2026-pintar-v1
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.26.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+
+      - name: Refresh lockfile under policy
+        working-directory: modern
+        run: pnpm install --lockfile-only
+
+      - name: Install frozen graph and format changed source
+        working-directory: modern
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm format
+
+      - name: Commit dependency/test compatibility repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add modern
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+          else
+            git commit -m "test: align Pint.ar Vitest type contract"
+            git push origin HEAD:modernization/2026-pintar-v1
+          fi
+
+      - name: Run full maintained quality contract
+        working-directory: modern
+        run: pnpm check
