@@ -1,0 +1,58 @@
+name: Bootstrap modern Pint.ar once
+
+on:
+  push:
+    branches:
+      - modernization/2026-pintar-v1
+    paths:
+      - ".github/workflows/bootstrap-modern-pintar-once.yml"
+      - ".github/scripts/bootstrap-modern-pintar-once.py"
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out modernization branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: modernization/2026-pintar-v1
+
+      - name: Generate maintained source and documentation
+        run: python3 .github/scripts/bootstrap-modern-pintar-once.py
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.26.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24
+
+      - name: Generate lockfile under pnpm policy
+        working-directory: modern
+        run: pnpm install --lockfile-only
+
+      - name: Commit generated foundation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .nvmrc docs modern .github/workflows/modern-quality.yml
+          git commit -m "feat: establish Pint.ar 2026 maintained authority"
+          git push origin HEAD:modernization/2026-pintar-v1
+
+      - name: Install locked dependencies
+        working-directory: modern
+        run: pnpm install --frozen-lockfile
+
+      - name: Run first maintained quality contract
+        working-directory: modern
+        run: pnpm check
