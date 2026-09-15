@@ -37,13 +37,12 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm format
 
-      - name: Commit canonical formatting and retrigger qualification
+      - name: Commit canonical source formatting
         shell: bash
         run: |
           set -euo pipefail
-          printf '\n# qualification retrigger after canonical formatting\n' >> .github/workflows/storefront-container-qualification-once.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add modern/src/domain/product.test.ts .github/workflows/storefront-container-qualification-once.yml
+          git add modern/src/domain/product.test.ts
           git commit -m "style: apply canonical storefront test formatting"
           git push origin HEAD:feat/2026-storefront-maturity
