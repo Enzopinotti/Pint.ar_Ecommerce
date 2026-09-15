@@ -1,0 +1,58 @@
+name: P2 baseline footprint once
+
+on:
+  push:
+    branches:
+      - ops/p2-baseline-audit-2026
+    paths:
+      - ".github/workflows/p2-baseline-footprint-once.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  footprint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out historical audit branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Frozen install
+        run: npm ci
+
+      - name: Build historical artifact without CI warning promotion
+        env:
+          CI: "false"
+        run: npm run build
+
+      - name: Report artifact footprint
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "build total: $(du -sh build | cut -f1)"
+          echo "asset total: $(du -sh build/static 2>/dev/null | cut -f1 || true)"
+          find build -type f -printf '%s %p\n' | sort -nr | head -n 25
+
+      - name: Report audit metadata
+        shell: bash
+        run: |
+          set +e
+          npm audit --json > /tmp/audit.json
+          code=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('/tmp/audit.json', 'utf8'));
+          console.log(JSON.stringify({
+            vulnerabilities: report.metadata?.vulnerabilities ?? null,
+            dependencies: report.metadata?.dependencies ?? null,
+          }, null, 2));
+          NODE
+          echo "audit exit code: $code (historical evidence only)"
