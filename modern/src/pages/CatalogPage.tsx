@@ -14,7 +14,6 @@ export function CatalogPage() {
 
   useEffect(() => {
     let active = true;
-    setStatus("loading");
     catalogRepository.list().then(
       (items) => {
         if (active) {
