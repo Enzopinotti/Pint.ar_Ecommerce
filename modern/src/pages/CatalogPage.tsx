@@ -2,12 +2,26 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
 import { catalogRepository } from "../data/catalogRepository";
-import { filterProducts, type Product } from "../domain/product";
+import {
+  selectProducts,
+  type Product,
+  type ProductSortMode,
+} from "../domain/product";
+
+const SORT_OPTIONS: Array<{ value: ProductSortMode; label: string }> = [
+  { value: "featured", label: "Orden original" },
+  { value: "price-asc", label: "Precio: menor a mayor" },
+  { value: "price-desc", label: "Precio: mayor a menor" },
+  { value: "name-asc", label: "Nombre A–Z" },
+  { value: "stock-desc", label: "Más stock demo" },
+];
 
 export function CatalogPage() {
   const params = useParams<{ kind?: string; categoryId?: string }>();
   const [products, setProducts] = useState<Product[]>([]);
   const [query, setQuery] = useState("");
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [sort, setSort] = useState<ProductSortMode>("featured");
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
@@ -34,15 +48,17 @@ export function CatalogPage() {
   const primary = params.kind ?? params.categoryId;
   const visible = useMemo(
     () =>
-      filterProducts(products, {
+      selectProducts(products, {
         query,
+        inStockOnly,
+        sort,
         primary:
           primary === "Pintura" || primary === "Herramienta"
             ? primary
             : undefined,
         secondary,
       }),
-    [products, query, primary, secondary],
+    [products, query, inStockOnly, sort, primary, secondary],
   );
 
   return (
@@ -50,26 +66,29 @@ export function CatalogPage() {
       <section className="hero">
         <div>
           <p className="eyebrow">
-            2023 → 2026 · React con criterio de producto
+            2023 → 2026 · storefront engineering
           </p>
-          <h1>Pint.ar, reconstruido para probar comportamiento real.</h1>
+          <h1>Pint.ar, un ecommerce educativo reconstruido con criterio.</h1>
           <p className="hero-copy">
-            Catálogo, carrito y checkout demo con estado determinístico, sin
-            fingir pagos, emails ni seguridad backend que este proyecto no
+            Catálogo, filtros, carrito y checkout demo con estado determinístico,
+            sin fingir pagos, emails ni seguridad backend que este proyecto no
             tiene.
           </p>
         </div>
         <aside className="trust-card" aria-label="Límite del demo">
           <strong>Modo demo local</strong>
           <p>
-            Los valores son fixtures educativos. Tus datos de checkout no salen
-            del navegador.
+            Productos, precios y stock son fixtures educativos 2026. Los datos
+            de checkout no salen del navegador.
           </p>
         </aside>
       </section>
 
-      <section className="catalog-controls" aria-label="Filtros de catálogo">
-        <label>
+      <section
+        className="catalog-controls storefront-controls"
+        aria-label="Filtros de catálogo"
+      >
+        <label className="catalog-control catalog-search">
           Buscar productos
           <input
             value={query}
@@ -78,6 +97,30 @@ export function CatalogPage() {
             placeholder="Ej. látex, rodillo…"
           />
         </label>
+
+        <label className="catalog-control">
+          Ordenar
+          <select
+            value={sort}
+            onChange={(event) => setSort(event.target.value as ProductSortMode)}
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="stock-toggle">
+          <input
+            checked={inStockOnly}
+            onChange={(event) => setInStockOnly(event.target.checked)}
+            type="checkbox"
+          />
+          Sólo con stock demo
+        </label>
+
         <div className="category-links" aria-label="Categorías">
           <Link to="/">Todo</Link>
           <Link to="/category/Pintura">Pinturas</Link>
@@ -92,7 +135,7 @@ export function CatalogPage() {
             <p className="eyebrow">Catálogo demostrativo</p>
             <h2 id="catalog-title">Productos</h2>
           </div>
-          <span>{visible.length} resultados</span>
+          <span aria-live="polite">{visible.length} resultados</span>
         </div>
         {status === "loading" && (
           <p role="status" className="state-card">
@@ -105,7 +148,20 @@ export function CatalogPage() {
           </p>
         )}
         {status === "ready" && visible.length === 0 && (
-          <p className="state-card">No hay productos para este filtro.</p>
+          <div className="state-card">
+            <p>No hay productos para esta combinación de filtros.</p>
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setInStockOnly(false);
+                setSort("featured");
+              }}
+            >
+              Limpiar filtros
+            </button>
+          </div>
         )}
         <div className="product-grid">
           {visible.map((product) => (
