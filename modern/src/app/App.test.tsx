@@ -20,20 +20,18 @@ function renderRoute(route: string) {
 describe("routing and truth boundaries", () => {
   it("renders the deterministic catalogue without a remote backend", async () => {
     renderRoute("/");
-    expect(
-      await screen.findByText("Látex interior blanco"),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Modo demo local/i)).toBeInTheDocument();
+    expect(await screen.findByText("Látex interior blanco")).toBeTruthy();
+    expect(screen.getByText(/Modo demo local/i)).toBeTruthy();
   });
 
   it("keeps the historical About route and explains both eras", () => {
     renderRoute("/sobreNosotros");
-    expect(screen.getByText("Coderhouse + UTN FRLP")).toBeInTheDocument();
-    expect(screen.getByText("Reconstrucción mantenible")).toBeInTheDocument();
+    expect(screen.getByText("Coderhouse + UTN FRLP")).toBeTruthy();
+    expect(screen.getByText("Reconstrucción mantenible")).toBeTruthy();
   });
 
   it("renders an explicit 404", () => {
     renderRoute("/ruta-inexistente");
-    expect(screen.getByRole("heading", { name: /404/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /404/ })).toBeTruthy();
   });
 });
