@@ -60,11 +60,11 @@ describe("checkout UI contract", () => {
     await user.click(button);
     fireEvent.submit(button.closest("form")!);
     expect(submit).toHaveBeenCalledTimes(1);
-    expect(screen.getByText(/2 unidades/)).toBeInTheDocument();
+    expect(screen.getByText(/2 unidades/)).toBeTruthy();
     resolveOrder?.({ id: "DEMO-TEST" });
-    expect(await screen.findByText(/Gracias, Ada/)).toBeInTheDocument();
-    expect(screen.getByText("DEMO-TEST")).toBeInTheDocument();
-    expect(screen.getByText(/no se enviará un email/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Gracias, Ada/)).toBeTruthy();
+    expect(screen.getByText("DEMO-TEST")).toBeTruthy();
+    expect(screen.getByText(/no se enviará un email/i)).toBeTruthy();
   });
 
   it("keeps the cart recoverable when persistence fails", async () => {
@@ -75,10 +75,9 @@ describe("checkout UI contract", () => {
     await user.click(
       screen.getByRole("button", { name: "Confirmar orden demo" }),
     );
-    expect(await screen.findByRole("alert")).toHaveTextContent(
-      /carrito sigue intacto/i,
-    );
-    expect(screen.getByText(/2 unidades/)).toBeInTheDocument();
+    const alert = await screen.findByRole("alert");
+    expect(alert.textContent).toMatch(/carrito sigue intacto/i);
+    expect(screen.getByText(/2 unidades/)).toBeTruthy();
     expect(
       JSON.parse(sessionStorage.getItem(CART_STORAGE_KEY) ?? "{}").lines,
     ).toHaveLength(1);
