@@ -1,0 +1,17 @@
+@mixin surface-card($padding: 1.5rem) {
+  padding: $padding;
+  border: 1px solid var(--store-border);
+  border-radius: var(--store-radius-lg);
+  background: var(--store-surface);
+  box-shadow: 0 8px 24px rgb(33 49 38 / 6%);
+}
+
+@mixin control {
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--store-border);
+  border-radius: var(--store-radius-sm);
+  background: var(--store-surface);
+  color: var(--store-text);
+  padding: 0.75rem 0.8rem;
+}

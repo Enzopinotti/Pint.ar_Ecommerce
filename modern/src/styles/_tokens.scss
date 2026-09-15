@@ -1,0 +1,41 @@
+:root {
+  color-scheme: light;
+  --store-bg: #f3f0e8;
+  --store-surface: #fffdf8;
+  --store-surface-soft: #e8e5dc;
+  --store-text: #172019;
+  --store-text-muted: #617064;
+  --store-border: #d8d6ca;
+  --store-action: #315d42;
+  --store-action-strong: #1f4430;
+  --store-accent: #dce9a9;
+  --store-warm: #e9874a;
+  --store-focus: #d8702f;
+  --store-danger: #9b302c;
+  --store-success: #2f6a45;
+  --store-shadow: 0 18px 50px rgb(33 49 38 / 10%);
+  --store-radius-sm: 12px;
+  --store-radius-md: 18px;
+  --store-radius-lg: 26px;
+  --store-space-1: 0.5rem;
+  --store-space-2: 0.75rem;
+  --store-space-3: 1rem;
+  --store-space-4: 1.5rem;
+  --store-space-5: 2rem;
+
+  /* Compatibility aliases while historical 2026 selectors migrate. */
+  --ink: var(--store-text);
+  --muted: var(--store-text-muted);
+  --paper: var(--store-surface);
+  --line: var(--store-border);
+  --green: var(--store-action);
+  --green-dark: var(--store-action-strong);
+  --lime: var(--store-accent);
+  --orange: var(--store-warm);
+  --danger: var(--store-danger);
+  --shadow: var(--store-shadow);
+
+  color: var(--store-text);
+  background: var(--store-bg);
+  accent-color: var(--store-action);
+}

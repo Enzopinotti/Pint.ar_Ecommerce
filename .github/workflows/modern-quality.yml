@@ -66,3 +66,63 @@ jobs:
             echo "Historical heavyweight source artifact leaked into maintained delivery."
             exit 1
           fi
+
+  container:
+    needs: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: modern
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Build production image
+        run: docker build --pull -t pintar-storefront:ci .
+
+      - name: Run hardened container
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run -d --rm --name pintar-storefront-ci \
+            --read-only \
+            --tmpfs /tmp:size=16m,mode=1777 \
+            --cap-drop ALL \
+            --security-opt no-new-privileges:true \
+            -p 8080:8080 \
+            pintar-storefront:ci
+
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/healthz >/dev/null; then exit 0; fi
+            sleep 1
+          done
+
+          docker logs pintar-storefront-ci
+          exit 1
+
+      - name: Verify runtime contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(curl -fsS http://127.0.0.1:8080/healthz)" = "ok"
+          test "$(docker inspect --format '{{.Config.User}}' pintar-storefront-ci)" = "nginx"
+
+          for path in / /carrito /checkout /sobreNosotros /Item/latex-interior-blanco /category/Pintura; do
+            code="$(curl -sS -o /tmp/page.html -w '%{http_code}' "http://127.0.0.1:8080${path}")"
+            echo "$path -> HTTP $code"
+            test "$code" = "200"
+            grep -Fq '<title>Pint.ar — Ecommerce educativo 2026</title>' /tmp/page.html
+          done
+
+          headers="$(curl -sSI http://127.0.0.1:8080/)"
+          grep -qi '^X-Content-Type-Options: nosniff' <<<"$headers"
+          grep -qi '^X-Frame-Options: DENY' <<<"$headers"
+          grep -qi '^Referrer-Policy: strict-origin-when-cross-origin' <<<"$headers"
+          grep -qi '^Permissions-Policy:' <<<"$headers"
+          grep -qi '^Content-Security-Policy:' <<<"$headers"
+
+      - name: Stop container
+        if: always()
+        run: docker stop pintar-storefront-ci >/dev/null 2>&1 || true

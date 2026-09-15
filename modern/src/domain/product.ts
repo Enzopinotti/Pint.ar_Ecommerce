@@ -1,4 +1,6 @@
 export type ProductCategory = "Pintura" | "Herramienta";
+export type ProductSortMode =
+  "featured" | "price-asc" | "price-desc" | "name-asc" | "stock-desc";
 
 export interface Product {
   id: string;
@@ -9,6 +11,14 @@ export interface Product {
   primaryCategory: ProductCategory;
   secondaryCategory: string;
   accent: string;
+}
+
+export interface ProductSelectionOptions {
+  query?: string;
+  primary?: string;
+  secondary?: string;
+  inStockOnly?: boolean;
+  sort?: ProductSortMode;
 }
 
 function asRecord(input: unknown): Record<string, unknown> {
@@ -60,13 +70,15 @@ export function parseProduct(input: unknown): Product {
 }
 
 export function parseCatalog(input: unknown): Product[] {
-  if (!Array.isArray(input))
+  if (!Array.isArray(input)) {
     throw new TypeError("El catálogo debe ser una lista.");
+  }
   const parsed = input.map(parseProduct);
   const ids = new Set<string>();
   for (const product of parsed) {
-    if (ids.has(product.id))
+    if (ids.has(product.id)) {
       throw new TypeError(`ID de producto duplicado: ${product.id}`);
+    }
     ids.add(product.id);
   }
   return parsed;
@@ -81,7 +93,7 @@ function normalize(value: string): string {
 
 export function filterProducts(
   products: readonly Product[],
-  options: { query?: string; primary?: string; secondary?: string },
+  options: ProductSelectionOptions,
 ): Product[] {
   const query = normalize(options.query?.trim() ?? "");
   return products.filter((product) => {
@@ -89,10 +101,37 @@ export function filterProducts(
       !options.primary || product.primaryCategory === options.primary;
     const secondaryMatches =
       !options.secondary || product.secondaryCategory === options.secondary;
+    const stockMatches = !options.inStockOnly || product.stock > 0;
     const haystack = normalize(
       `${product.name} ${product.description} ${product.primaryCategory} ${product.secondaryCategory}`,
     );
     const queryMatches = query.length === 0 || haystack.includes(query);
-    return primaryMatches && secondaryMatches && queryMatches;
+    return primaryMatches && secondaryMatches && stockMatches && queryMatches;
   });
+}
+
+export function sortProducts(
+  products: readonly Product[],
+  mode: ProductSortMode = "featured",
+): Product[] {
+  const copy = [...products];
+  if (mode === "featured") return copy;
+
+  const byName = (a: Product, b: Product) =>
+    a.name.localeCompare(b.name, "es-AR", { sensitivity: "base" });
+
+  copy.sort((a, b) => {
+    if (mode === "price-asc") return a.price - b.price || byName(a, b);
+    if (mode === "price-desc") return b.price - a.price || byName(a, b);
+    if (mode === "stock-desc") return b.stock - a.stock || byName(a, b);
+    return byName(a, b);
+  });
+  return copy;
+}
+
+export function selectProducts(
+  products: readonly Product[],
+  options: ProductSelectionOptions,
+): Product[] {
+  return sortProducts(filterProducts(products, options), options.sort);
 }

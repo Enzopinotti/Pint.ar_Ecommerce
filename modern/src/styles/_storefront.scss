@@ -1,0 +1,67 @@
+@use "./mixins" as mixins;
+
+.storefront-controls {
+  grid-template-columns: minmax(220px, 1.4fr) minmax(180px, 0.8fr);
+  align-items: end;
+}
+
+.catalog-control {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+  font-weight: 750;
+}
+
+.catalog-control input,
+.catalog-control select {
+  @include mixins.control;
+}
+
+.stock-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  width: fit-content;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.stock-toggle input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+}
+
+.storefront-controls .category-links {
+  grid-column: 1 / -1;
+}
+
+.product-card {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--store-shadow);
+}
+
+.state-card .button {
+  margin-top: var(--store-space-2);
+}
+
+@media (max-width: 720px) {
+  .storefront-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .storefront-controls .category-links {
+    grid-column: auto;
+  }
+
+  .stock-toggle {
+    width: 100%;
+  }
+}
