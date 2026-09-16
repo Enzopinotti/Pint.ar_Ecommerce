@@ -9,9 +9,12 @@ import "./styles/main.scss";
 const root = document.getElementById("root");
 if (!root) throw new Error("No se encontró #root.");
 
+const baseUrl = import.meta.env.BASE_URL;
+const basename = baseUrl === "/" ? undefined : baseUrl.replace(/\/$/, "");
+
 createRoot(root).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <OrderRepositoryProvider>
         <CartProvider>
           <AppRoutes />
