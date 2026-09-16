@@ -101,3 +101,67 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  public-smoke:
+    name: public-smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    needs: deploy
+    steps:
+      - name: Verify public HTTP artifact
+        shell: bash
+        env:
+          ORIGIN: https://enzopinotti.github.io/Pint.ar_Ecommerce
+        run: |
+          set -euo pipefail
+          ready=0
+          for attempt in $(seq 1 60); do
+            if curl -fsS "$ORIGIN/" -o /tmp/index.html \
+              && grep -Fq '<title>Pint.ar — Ecommerce educativo 2026</title>' /tmp/index.html \
+              && grep -Fq 'https://enzopinotti.github.io/Pint.ar_Ecommerce/' /tmp/index.html \
+              && grep -Fq '/Pint.ar_Ecommerce/assets/' /tmp/index.html; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" = "1"
+
+          asset_path="$(grep -oE '/Pint\.ar_Ecommerce/assets/index-[^\" ]+\.js' /tmp/index.html | head -n1)"
+          test -n "$asset_path"
+          curl -fsS "https://enzopinotti.github.io${asset_path}" -o /tmp/app.js
+          test -s /tmp/app.js
+
+          curl -fsS "$ORIGIN/robots.txt" -o /tmp/robots.txt
+          grep -Fq 'Sitemap: https://enzopinotti.github.io/Pint.ar_Ecommerce/sitemap.xml' /tmp/robots.txt
+
+          curl -fsS "$ORIGIN/sitemap.xml" -o /tmp/sitemap.xml
+          grep -Fq '<loc>https://enzopinotti.github.io/Pint.ar_Ecommerce/</loc>' /tmp/sitemap.xml
+
+          deep_code="$(curl -sS -o /tmp/deep.html -w '%{http_code}' "$ORIGIN/carrito")"
+          case "$deep_code" in
+            200|404) ;;
+            *) echo "Unexpected deep-route status: $deep_code"; exit 1 ;;
+          esac
+          grep -Fq '<title>Pint.ar — Ecommerce educativo 2026</title>' /tmp/deep.html
+
+      - name: Verify direct deep route in Chrome
+        shell: bash
+        env:
+          CART_URL: https://enzopinotti.github.io/Pint.ar_Ecommerce/carrito
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$chrome"
+          "$chrome" --version
+          "$chrome" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --virtual-time-budget=5000 \
+            --dump-dom \
+            "$CART_URL" > /tmp/cart-dom.html
+          grep -Fq 'Tu selección' /tmp/cart-dom.html
+          grep -Fq 'El carrito está vacío' /tmp/cart-dom.html
+          grep -Fq 'Ir al catálogo' /tmp/cart-dom.html
+          echo 'Pint.ar public Pages smoke passed.'
