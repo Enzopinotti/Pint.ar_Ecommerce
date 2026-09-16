@@ -11,11 +11,15 @@ La modernización 2026 **no reescribe esa historia**. El proyecto original perma
 | 2023 | commit [`3224d89c0c512b3509cea25f1c49a119d371e338`](https://github.com/Enzopinotti/Pint.ar_Ecommerce/tree/3224d89c0c512b3509cea25f1c49a119d371e338) | entrega histórica React + CRA + Firebase/Firestore |
 | 2026 | [`modern/`](./modern/) | storefront mantenido, testeable, reproducible y explícitamente educativo |
 
+La raíz del repositorio contiene además `index.html`, `404.html`, `assets/`, `robots.txt`, `sitemap.xml` y `.nojekyll` generados. **No son una tercera fuente de producto:** son un mirror de compatibilidad del build de Pages de `modern/`, verificado byte por byte en CI para que el publisher histórico basado en branch no pueda volver a publicar la aplicación 2023.
+
 El Vercel de la entrega original sigue siendo evidencia histórica:
 
 `https://pre-entrega2-pinotti-enzopinotti.vercel.app/`
 
-No se presenta como autoridad de producción 2026 hasta cerrar el cutover público de la reconstrucción moderna.
+La autoridad pública 2026 objetivo es:
+
+`https://enzopinotti.github.io/Pint.ar_Ecommerce/`
 
 ## Rol dentro del portfolio
 
@@ -74,12 +78,7 @@ Sass tampoco se usa como una segunda fuente rígida de verdad visual: las **CSS 
 - sirve assets versionados con cache immutable;
 - agrega CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y `Permissions-Policy`.
 
-[`modern/compose.yaml`](./modern/compose.yaml) agrega:
-
-- filesystem read-only;
-- `/tmp` como `tmpfs`;
-- `cap_drop: ALL`;
-- `no-new-privileges`.
+[`modern/compose.yaml`](./modern/compose.yaml) agrega filesystem read-only, `/tmp` como `tmpfs`, `cap_drop: ALL` y `no-new-privileges`.
 
 No hay secretos dentro de la imagen ni dependencia del Firebase histórico.
 
@@ -93,24 +92,9 @@ La política pnpm mantiene `strictDepBuilds`. El addon nativo opcional `@parcel/
 
 ## Calidad reproducible
 
-La calificación de storefront 2026 (`35032744901`) pasó con:
+La calificación de storefront 2026 (`35032744901`) pasó con install congelado, Prettier, ESLint, TypeScript estricto, **20/20 tests**, build Vite, Docker multi-stage, contenedor no-root/read-only/sin capabilities, health/deep routes/security headers y Chrome 152 con búsqueda, ordenamiento y responsive 360/768/1440.
 
-- install congelado y supply-chain policy;
-- Prettier;
-- ESLint;
-- TypeScript estricto con `skipLibCheck: false`;
-- **6 archivos de test / 20 tests / 20 passed**;
-- build Vite de producción;
-- JavaScript: `281.20 kB` / `88.81 kB gzip`;
-- CSS compilado desde Sass: `11.48 kB` / `3.30 kB gzip`;
-- Docker build multi-stage;
-- contenedor no-root + read-only + sin capabilities;
-- healthcheck y rutas profundas;
-- security headers;
-- Chrome 152 con búsqueda/ordenamiento y responsive 360/768/1440;
-- cero recursos remotos durante el browser smoke.
-
-El workflow permanente [`Modern Pint.ar quality`](./.github/workflows/modern-quality.yml) valida frontend y, después de quedar verde, construye y ejecuta también el contrato del contenedor endurecido.
+El workflow permanente [`Modern Pint.ar quality`](./.github/workflows/modern-quality.yml) valida frontend, artifact Pages, paridad del mirror de raíz y, después de quedar verde, construye y ejecuta también el contrato del contenedor endurecido.
 
 Por contraste, el CRA histórico reproducido en 2026 generó un `build/` de aproximadamente **55 MB**, principalmente por media histórica pesada que sigue preservada en Git pero ya no forma parte del delivery mantenido.
 
@@ -143,11 +127,14 @@ Luego:
 - [Inventario histórico y baseline 2023](./docs/historical-inventory-2026.md)
 - [Arquitectura y decisiones 2026](./docs/modernization-2026.md)
 - [Maduración storefront, Sass y Docker](./docs/storefront-maturity-2026.md)
+- [Cutover público y paridad de publishers](./docs/deployment-cutover-2026.md)
 - [Issue de modernización general](https://github.com/Enzopinotti/Pint.ar_Ecommerce/issues/1)
 - [Issue de maduración storefront](https://github.com/Enzopinotti/Pint.ar_Ecommerce/issues/3)
 
-## Todavía pendiente antes del cierre total
+## Estado del cierre
 
-La maduración local/container ya está calificada, pero la modernización completa requiere un **cutover público 2026** con una única autoridad de deployment, smoke contra el origen real y documentación de rollback. Hasta entonces el deploy histórico no se confunde con la autoridad moderna.
+La implementación local/container y el cutover por GitHub Actions están calificados. Como la configuración histórica de Pages todavía puede disparar un publisher branch/Jekyll, la raíz se mantiene como mirror generado del mismo artifact moderno y CI impide divergencias. Cambiar Pages Source a **GitHub Actions** sigue siendo una simplificación administrativa recomendable, pero ya no es necesario para preservar la corrección del producto.
+
+El cierre total requiere únicamente que este contrato de paridad pase en `main` y que el origen público confirme home, assets, metadata y deep routes modernos.
 
 La regla del repositorio sigue siendo: **preservar 2023 como evidencia y mejorar 2026 sin inventar capacidades que el producto no tiene**.
