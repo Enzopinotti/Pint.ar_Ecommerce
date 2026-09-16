@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://enzopinotti.github.io/Pint.ar_Ecommerce/sitemap.xml

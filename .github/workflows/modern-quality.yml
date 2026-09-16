@@ -8,6 +8,12 @@ on:
       - ".nvmrc"
       - ".editorconfig"
       - "README.md"
+      - "index.html"
+      - "404.html"
+      - "robots.txt"
+      - "sitemap.xml"
+      - ".nojekyll"
+      - "assets/**"
       - ".github/workflows/modern-quality.yml"
       - ".github/workflows/pages-deploy.yml"
   push:
@@ -19,6 +25,12 @@ on:
       - ".nvmrc"
       - ".editorconfig"
       - "README.md"
+      - "index.html"
+      - "404.html"
+      - "robots.txt"
+      - "sitemap.xml"
+      - ".nojekyll"
+      - "assets/**"
       - ".github/workflows/modern-quality.yml"
       - ".github/workflows/pages-deploy.yml"
 
@@ -84,6 +96,17 @@ jobs:
           grep -Fq 'https://enzopinotti.github.io/Pint.ar_Ecommerce/' dist/index.html
           grep -Fq 'https://enzopinotti.github.io/Pint.ar_Ecommerce/sitemap.xml' dist/robots.txt
           cmp -s dist/index.html dist/404.html
+
+      - name: Verify branch-source mirror parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp dist/index.html ../index.html
+          cmp dist/404.html ../404.html
+          cmp dist/robots.txt ../robots.txt
+          cmp dist/sitemap.xml ../sitemap.xml
+          cmp dist/.nojekyll ../.nojekyll
+          diff -qr dist/assets ../assets
 
   container:
     needs: quality

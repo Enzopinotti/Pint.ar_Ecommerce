@@ -6,6 +6,12 @@ on:
       - main
     paths:
       - "modern/**"
+      - "index.html"
+      - "404.html"
+      - "robots.txt"
+      - "sitemap.xml"
+      - ".nojekyll"
+      - "assets/**"
       - ".nvmrc"
       - ".github/workflows/pages-deploy.yml"
   workflow_dispatch:
@@ -64,6 +70,17 @@ jobs:
           grep -Fq 'https://enzopinotti.github.io/Pint.ar_Ecommerce/' modern/dist/index.html
           grep -Fq 'https://enzopinotti.github.io/Pint.ar_Ecommerce/sitemap.xml' modern/dist/robots.txt
           cmp -s modern/dist/index.html modern/dist/404.html
+
+      - name: Verify branch-source mirror parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp modern/dist/index.html index.html
+          cmp modern/dist/404.html 404.html
+          cmp modern/dist/robots.txt robots.txt
+          cmp modern/dist/sitemap.xml sitemap.xml
+          cmp modern/dist/.nojekyll .nojekyll
+          diff -qr modern/dist/assets assets
 
       - name: Configure Pages metadata
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
