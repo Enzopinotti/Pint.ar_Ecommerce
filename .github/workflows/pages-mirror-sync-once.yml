@@ -1,0 +1,76 @@
+name: Sync Pint.ar Pages root mirror once
+
+on:
+  push:
+    branches:
+      - fix/2026-pages-authority-parity
+    paths:
+      - ".github/workflows/pages-mirror-sync-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out parity branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: fix/2026-pages-authority-parity
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.26.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: modern/pnpm-lock.yaml
+
+      - name: Build exact Pages artifact
+        working-directory: modern
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build:pages
+          cp dist/index.html dist/404.html
+
+      - name: Synchronize branch-source mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf assets
+          cp modern/dist/index.html index.html
+          cp modern/dist/404.html 404.html
+          cp modern/dist/robots.txt robots.txt
+          cp modern/dist/sitemap.xml sitemap.xml
+          cp modern/dist/.nojekyll .nojekyll
+          cp -a modern/dist/assets assets
+
+      - name: Verify byte-for-byte mirror parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp modern/dist/index.html index.html
+          cmp modern/dist/404.html 404.html
+          cmp modern/dist/robots.txt robots.txt
+          cmp modern/dist/sitemap.xml sitemap.xml
+          cmp modern/dist/.nojekyll .nojekyll
+          diff -qr modern/dist/assets assets
+          grep -Fq '/Pint.ar_Ecommerce/assets/' index.html
+          grep -Fq 'https://enzopinotti.github.io/Pint.ar_Ecommerce/' index.html
+
+      - name: Commit generated root mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html 404.html robots.txt sitemap.xml .nojekyll assets
+          git commit -m "build: mirror modern Pages artifact at repository root"
+          git push origin HEAD:fix/2026-pages-authority-parity
